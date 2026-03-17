@@ -1,0 +1,1282 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DomeSOC — AI-Powered Security Operations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --dark: #080C14;
+    --navy: #0D1B2A;
+    --panel: #0F1923;
+    --border: #1A2535;
+    --blue: #3B82F6;
+    --blue-dim: rgba(59,130,246,0.12);
+    --cyan: #06B6D4;
+    --green: #22C55E;
+    --red: #EF4444;
+    --white: #F8FAFC;
+    --gray: #64748B;
+    --lgray: #94A3B8;
+    --muted: #334155;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--dark);
+    color: var(--white);
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+    cursor: default;
+  }
+
+  /* ── NOISE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.4;
+  }
+
+  /* ── GRID BACKGROUND ── */
+  .grid-bg {
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(59,130,246,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(59,130,246,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── GLOW ORBS ── */
+  .orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(120px);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .orb-1 { width: 600px; height: 600px; background: rgba(59,130,246,0.06); top: -200px; right: -150px; }
+  .orb-2 { width: 400px; height: 400px; background: rgba(6,182,212,0.04); bottom: 200px; left: -100px; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 0 48px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(8,12,20,0.8);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+  }
+  .nav-logo .dome { color: var(--white); }
+  .nav-logo .soc  { color: var(--blue); }
+
+  .nav-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 400;
+    color: var(--green);
+    background: rgba(34,197,94,0.1);
+    border: 1px solid rgba(34,197,94,0.2);
+    padding: 3px 8px;
+    border-radius: 3px;
+    letter-spacing: 1px;
+    margin-left: 12px;
+    animation: pulse-badge 3s ease-in-out infinite;
+  }
+
+  @keyframes pulse-badge {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+  }
+
+  .nav-right { display: flex; align-items: center; gap: 32px; }
+
+  .nav-link {
+    font-size: 13px;
+    color: var(--gray);
+    text-decoration: none;
+    letter-spacing: 0.3px;
+    transition: color 0.2s;
+  }
+  .nav-link:hover { color: var(--white); }
+
+  .nav-cta {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--white);
+    background: var(--blue);
+    border: none;
+    padding: 8px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+    letter-spacing: 0.3px;
+  }
+  .nav-cta:hover { background: #2563EB; transform: translateY(-1px); }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 120px 48px 80px;
+    z-index: 1;
+  }
+
+  .hero-content {
+    max-width: 780px;
+  }
+
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--cyan);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.1s;
+  }
+
+  .hero-eyebrow::before {
+    content: '';
+    width: 24px;
+    height: 1px;
+    background: var(--cyan);
+  }
+
+  .hero-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(52px, 7vw, 88px);
+    font-weight: 800;
+    line-height: 1.0;
+    letter-spacing: -2px;
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.25s;
+  }
+
+  .hero-title .dome { color: var(--white); }
+  .hero-title .soc  { color: var(--blue); }
+
+  .hero-title .tagline {
+    display: block;
+    font-size: clamp(20px, 2.8vw, 32px);
+    font-weight: 500;
+    color: var(--lgray);
+    letter-spacing: -0.5px;
+    margin-top: 8px;
+  }
+
+  .hero-sub {
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--lgray);
+    max-width: 580px;
+    margin-bottom: 44px;
+    font-weight: 300;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.4s;
+  }
+
+  .hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.55s;
+  }
+
+  .btn-primary {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--white);
+    background: var(--blue);
+    border: none;
+    padding: 14px 32px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.25s;
+    letter-spacing: 0.2px;
+  }
+  .btn-primary:hover { background: #2563EB; transform: translateY(-2px); box-shadow: 0 12px 40px rgba(59,130,246,0.3); }
+
+  .btn-primary .arrow {
+    transition: transform 0.2s;
+  }
+  .btn-primary:hover .arrow { transform: translateX(4px); }
+
+  .btn-ghost {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--lgray);
+    background: transparent;
+    border: 1px solid var(--border);
+    padding: 13px 28px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .btn-ghost:hover { color: var(--white); border-color: var(--gray); }
+
+  .hero-note {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.7s;
+  }
+
+  /* ── HERO VISUAL ── */
+  .hero-visual {
+    position: absolute;
+    right: 48px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 520px;
+    opacity: 0;
+    animation: fadeIn 1.2s ease forwards 0.6s;
+  }
+
+  @media (max-width: 1100px) { .hero-visual { display: none; } }
+  /* ── PRICING ── */
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 48px;
+  }
+  .pricing-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 32px;
+    position: relative;
+    transition: border-color 0.3s;
+  }
+  .pricing-card:hover { border-color: var(--blue); }
+  .pricing-card.featured {
+    border-color: var(--blue);
+    background: linear-gradient(135deg, rgba(59,130,246,0.08) 0%, var(--panel) 100%);
+  }
+  .pricing-card.featured::before {
+    content: 'MOST POPULAR';
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--blue);
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    padding: 3px 12px;
+    border-radius: 20px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .pricing-card.enterprise { border-color: rgba(168,85,247,0.4); }
+  .pricing-name {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: var(--gray);
+    font-family: 'JetBrains Mono', monospace;
+    margin-bottom: 12px;
+  }
+  .pricing-price {
+    font-size: 42px;
+    font-weight: 800;
+    font-family: 'Syne', sans-serif;
+    color: var(--white);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .pricing-period { font-size: 13px; color: var(--gray); margin-bottom: 24px; }
+  .pricing-features { list-style: none; space-y: 10px; margin-bottom: 32px; }
+  .pricing-features li {
+    font-size: 13px;
+    color: var(--lgray);
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .pricing-features li::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; }
+  .pricing-features li.dim { color: var(--muted); }
+  .pricing-features li.dim::before { content: '–'; color: var(--muted); }
+  .pricing-cta {
+    display: block;
+    text-align: center;
+    padding: 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s;
+    border: 1px solid var(--border);
+    color: var(--lgray);
+  }
+  .pricing-cta:hover { border-color: var(--blue); color: var(--white); }
+  .pricing-cta.featured-cta {
+    background: var(--blue);
+    border-color: var(--blue);
+    color: white;
+  }
+  .pricing-cta.featured-cta:hover { background: #2563eb; }
+  .pricing-cta.enterprise-cta {
+    border-color: rgba(168,85,247,0.4);
+    color: rgb(192,132,252);
+  }
+  @media (max-width: 900px) { .pricing-grid { grid-template-columns: 1fr; } }
+
+  .terminal {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.02);
+  }
+
+  .terminal-bar {
+    background: rgba(255,255,255,0.03);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot-r { background: #EF4444; }
+  .dot-y { background: #F59E0B; }
+  .dot-g { background: #22C55E; }
+
+  .terminal-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--gray);
+    margin-left: 8px;
+    letter-spacing: 0.5px;
+  }
+
+  .terminal-body {
+    padding: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    line-height: 1.8;
+  }
+
+  .t-line { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 4px; }
+  .t-time { color: var(--muted); min-width: 52px; font-size: 10px; padding-top: 2px; }
+  .t-sev-5  { color: var(--red); font-weight: 500; }
+  .t-sev-4  { color: var(--cyan); font-weight: 500; }
+  .t-sev-3  { color: #F59E0B; font-weight: 500; }
+  .t-msg { color: var(--lgray); font-size: 11px; }
+  .t-tag {
+    display: inline-block;
+    font-size: 9px;
+    padding: 1px 6px;
+    border-radius: 3px;
+    margin-left: 6px;
+    vertical-align: middle;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+  }
+  .t-tag-red   { background: rgba(239,68,68,0.15);  color: var(--red); }
+  .t-tag-cyan  { background: rgba(6,182,212,0.15);  color: var(--cyan); }
+  .t-tag-green { background: rgba(34,197,94,0.15);  color: var(--green); }
+  .t-tag-amber { background: rgba(245,158,11,0.15); color: #F59E0B; }
+
+  .t-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 12px 0;
+  }
+
+  .t-ai {
+    background: rgba(59,130,246,0.07);
+    border: 1px solid rgba(59,130,246,0.15);
+    border-radius: 6px;
+    padding: 12px;
+    margin-top: 12px;
+  }
+
+  .t-ai-label {
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    color: var(--blue);
+    font-weight: 500;
+    margin-bottom: 6px;
+  }
+
+  .t-ai-text {
+    color: var(--lgray);
+    font-size: 11px;
+    line-height: 1.6;
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+  }
+
+  .t-ai-action {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .t-score {
+    font-size: 11px;
+    color: var(--lgray);
+  }
+  .t-score-val {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--red);
+  }
+
+  .t-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--white);
+    background: var(--blue);
+    border: none;
+    padding: 6px 14px;
+    border-radius: 3px;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+  }
+
+  .cursor {
+    display: inline-block;
+    width: 7px;
+    height: 13px;
+    background: var(--blue);
+    margin-left: 2px;
+    vertical-align: middle;
+    animation: blink 1.2s step-end infinite;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+  /* ── STATS BAR ── */
+  .stats-bar {
+    position: relative;
+    z-index: 1;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: rgba(13,27,42,0.6);
+    backdrop-filter: blur(10px);
+    padding: 32px 48px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+  }
+
+  .stat-item {
+    padding: 0 32px;
+    border-right: 1px solid var(--border);
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards;
+  }
+  .stat-item:first-child { padding-left: 0; }
+  .stat-item:last-child  { border-right: none; }
+
+  .stat-item:nth-child(1) { animation-delay: 0.1s; }
+  .stat-item:nth-child(2) { animation-delay: 0.2s; }
+  .stat-item:nth-child(3) { animation-delay: 0.3s; }
+  .stat-item:nth-child(4) { animation-delay: 0.4s; }
+
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 38px;
+    font-weight: 800;
+    color: var(--blue);
+    letter-spacing: -1px;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--gray);
+    font-weight: 400;
+    letter-spacing: 0.3px;
+  }
+
+  .stat-src {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    margin-top: 4px;
+    letter-spacing: 0.3px;
+  }
+
+  /* ── SECTIONS ── */
+  section {
+    position: relative;
+    z-index: 1;
+    padding: 100px 48px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--cyan);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-eyebrow::before { content: '//'; color: var(--muted); }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(32px, 4vw, 48px);
+    font-weight: 800;
+    letter-spacing: -1px;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+
+  .section-sub {
+    font-size: 16px;
+    color: var(--lgray);
+    max-width: 560px;
+    line-height: 1.7;
+    font-weight: 300;
+    margin-bottom: 60px;
+  }
+
+  /* ── THREE NETWORKS ── */
+  .networks {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 48px;
+  }
+
+  .network-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 32px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s;
+  }
+
+  .network-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+  }
+
+  .network-card.blue::before  { background: var(--blue); }
+  .network-card.cyan::before  { background: var(--cyan); }
+  .network-card.green::before { background: var(--green); }
+
+  .network-card:hover {
+    border-color: rgba(59,130,246,0.3);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  }
+
+  .network-icon {
+    font-size: 32px;
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  .network-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    letter-spacing: -0.3px;
+  }
+
+  .network-desc {
+    font-size: 14px;
+    color: var(--lgray);
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  .network-tag {
+    display: inline-block;
+    margin-top: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1px;
+    padding: 4px 10px;
+    border-radius: 3px;
+  }
+  .network-tag.blue  { background: rgba(59,130,246,0.1);  color: var(--blue); }
+  .network-tag.cyan  { background: rgba(6,182,212,0.1);   color: var(--cyan); }
+  .network-tag.green { background: rgba(34,197,94,0.1);   color: var(--green); }
+
+  /* ── FEATURES GRID ── */
+  .features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .feature-cell {
+    background: var(--panel);
+    padding: 32px;
+    transition: background 0.2s;
+  }
+  .feature-cell:hover { background: rgba(59,130,246,0.04); }
+
+  .feature-icon {
+    font-size: 24px;
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .feature-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    letter-spacing: -0.2px;
+  }
+
+  .feature-desc {
+    font-size: 13px;
+    color: var(--gray);
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  /* ── COMPLIANCE ── */
+  .compliance-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 48px;
+  }
+
+  .compliance-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 28px;
+    text-align: center;
+  }
+
+  .compliance-fraction {
+    font-family: 'Syne', sans-serif;
+    font-size: 40px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin-bottom: 4px;
+  }
+
+  .compliance-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--gray);
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+  }
+
+  .compliance-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  .compliance-note {
+    font-size: 12px;
+    color: var(--gray);
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  .compliance-disclaimer {
+    margin-top: 24px;
+    padding: 14px 20px;
+    background: rgba(251,191,36,0.05);
+    border: 1px solid rgba(251,191,36,0.15);
+    border-radius: 6px;
+    font-size: 12px;
+    color: #FCD34D;
+    font-family: 'JetBrains Mono', monospace;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    line-height: 1.6;
+  }
+
+  /* ── CTA SECTION ── */
+  .cta-section {
+    position: relative;
+    z-index: 1;
+    padding: 100px 48px;
+    text-align: center;
+    border-top: 1px solid var(--border);
+    background: rgba(13,27,42,0.4);
+  }
+
+  .cta-section .section-title { margin-bottom: 16px; }
+
+  .cta-sub {
+    font-size: 16px;
+    color: var(--lgray);
+    margin-bottom: 40px;
+    font-weight: 300;
+  }
+
+  .cta-form {
+    display: flex;
+    gap: 12px;
+    max-width: 480px;
+    margin: 0 auto 16px;
+    justify-content: center;
+  }
+
+  .cta-input {
+    flex: 1;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 13px 18px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: var(--white);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .cta-input::placeholder { color: var(--muted); }
+  .cta-input:focus { border-color: var(--blue); }
+
+  .cta-note {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    position: relative;
+    z-index: 1;
+    border-top: 1px solid var(--border);
+    padding: 32px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .footer-logo {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 800;
+  }
+  .footer-logo .dome { color: var(--white); }
+  .footer-logo .soc  { color: var(--blue); }
+
+  .footer-links {
+    display: flex;
+    gap: 24px;
+  }
+  .footer-link {
+    font-size: 12px;
+    color: var(--gray);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-link:hover { color: var(--white); }
+
+  .footer-right {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  /* ── SEPARATOR ── */
+  .sep {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 48px;
+    border-top: 1px solid var(--border);
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--dark); }
+  ::-webkit-scrollbar-thumb { background: var(--muted); border-radius: 2px; }
+
+  /* ── MOBILE ── */
+  @media (max-width: 768px) {
+    nav { padding: 0 20px; }
+    nav .nav-right .nav-link { display: none; }
+    .hero { padding: 100px 20px 60px; }
+    .stats-bar { grid-template-columns: repeat(2,1fr); padding: 24px 20px; }
+    .stat-item { padding: 16px; border-right: none; border-bottom: 1px solid var(--border); }
+    section { padding: 60px 20px; }
+    .networks, .features, .compliance-grid { grid-template-columns: 1fr; }
+    .cta-form { flex-direction: column; }
+    footer { flex-direction: column; gap: 20px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+
+<!-- NAV -->
+<nav>
+  <div style="display:flex;align-items:center;">
+    <div class="nav-logo"><span class="dome">Dome</span><span class="soc">SOC</span></div>
+    <span class="nav-badge">LIVE DEMO</span>
+  </div>
+  <div class="nav-right">
+    <a href="#how-it-works" class="nav-link">How it works</a>
+    <a href="#product" class="nav-link">Product</a>
+    <a href="#compliance" class="nav-link">Compliance</a>
+    <a href="#pricing" class="nav-link">Pricing</a>
+    <a href="https://dome-soc.vercel.app" class="nav-cta" target="_blank">Request Demo Access →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-content">
+    <div class="hero-eyebrow">AI-Powered Security Operations</div>
+    <h1 class="hero-title">
+      <span class="dome">Dome</span><span class="soc">SOC</span>
+      <span class="tagline">4 seconds.<br>Not 4 hours.</span>
+    </h1>
+    <p class="hero-sub">
+      DomeSOC is the autonomous AI brain that sits above your security stack. Mean time to respond: 4 seconds. Industry average: 4 hours. No extra analysts required.
+    </p>
+    <div class="hero-actions">
+      <a href="mailto:Mashal_qk@yahoo.com?subject=DomeSOC Demo Access Request" class="btn-primary">
+        Request Demo Access <span class="arrow">→</span>
+      </a>
+      <a href="https://dome-soc.vercel.app" class="btn-ghost" target="_blank">View Live Demo</a>
+    </div>
+    <div class="hero-note">
+      <span style="color:var(--green)">●</span>
+      Demo live &nbsp;·&nbsp; Login: admin@ai-soc.com / admin123 &nbsp;·&nbsp; No sales call required
+    </div>
+  </div>
+
+  <!-- Terminal visual -->
+  <div class="hero-visual">
+    <div class="terminal">
+      <div class="terminal-bar">
+        <div class="dot dot-r"></div>
+        <div class="dot dot-y"></div>
+        <div class="dot dot-g"></div>
+        <div class="terminal-title">domesoc · detective_network · live</div>
+      </div>
+      <div class="terminal-body">
+        <div class="t-line">
+          <span class="t-time">09:14:02</span>
+          <span class="t-sev-5">[SEV-5]</span>
+          <span class="t-msg">Lateral movement: FIN-WS04 → DC01<span class="t-tag t-tag-red">T1021.002</span></span>
+        </div>
+        <div class="t-line">
+          <span class="t-time">09:14:03</span>
+          <span class="t-sev-5">[SEV-5]</span>
+          <span class="t-msg">Pass-the-hash attempt detected<span class="t-tag t-tag-red">T1550.002</span></span>
+        </div>
+        <div class="t-line">
+          <span class="t-time">09:14:05</span>
+          <span class="t-sev-4">[SEV-4]</span>
+          <span class="t-msg">Unusual LSASS access: proc=mimikatz.exe<span class="t-tag t-tag-cyan">T1003.001</span></span>
+        </div>
+        <div class="t-line">
+          <span class="t-time">09:14:07</span>
+          <span class="t-sev-3">[SEV-3]</span>
+          <span class="t-msg">Outbound C2 beacon: 185.220.101.47<span class="t-tag t-tag-amber">T1071.001</span></span>
+        </div>
+        <hr class="t-divider">
+        <div class="t-line" style="margin-bottom:0">
+          <span class="t-time">09:14:08</span>
+          <span style="color:var(--blue);font-weight:500">[AI]</span>
+          <span class="t-msg">Correlating 4 signals<span class="t-tag t-tag-cyan">PROCESSING</span><span class="cursor"></span></span>
+        </div>
+        <div class="t-ai">
+          <div class="t-ai-label">ADVISOR NETWORK · ANTHROPIC CLAUDE</div>
+          <div class="t-ai-text">
+            High-confidence ransomware precursor. Credential theft → lateral movement → C2 beacon in a 6-second window. Recommend immediate containment of FIN-WS04 and isolation of DC01 admin shares.
+          </div>
+          <div class="t-ai-action">
+            <div class="t-score">
+              Risk Score<br>
+              <span class="t-score-val">94</span><span style="color:var(--gray);font-size:13px">/100</span>
+            </div>
+            <button class="t-btn">APPROVE CONTAINMENT</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <div class="stat-num">277</div>
+    <div class="stat-label">days avg. to identify a breach</div>
+    <div class="stat-src">IBM Cost of a Data Breach 2024</div>
+  </div>
+  <div class="stat-item" style="animation-delay:0.15s">
+    <div class="stat-num">$4.5M</div>
+    <div class="stat-label">avg. cost per data breach</div>
+    <div class="stat-src">IBM Cost of a Data Breach 2024</div>
+  </div>
+  <div class="stat-item" style="animation-delay:0.25s">
+    <div class="stat-num">3.4M</div>
+    <div class="stat-label">unfilled cybersecurity roles</div>
+    <div class="stat-src">ISC2 Workforce Study 2024</div>
+  </div>
+  <div class="stat-item" style="animation-delay:0.35s">
+    <div class="stat-num">~80%</div>
+    <div class="stat-label">SOC alerts go uninvestigated</div>
+    <div class="stat-src">Forrester SOC Survey 2023</div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section id="how-it-works">
+  <div class="section-eyebrow">How it works</div>
+  <h2 class="section-title reveal">Three networks.<br>One AI brain.</h2>
+  <p class="section-sub reveal">DomeSOC's architecture is designed from first principles — not retrofitted from a legacy SIEM. Each network handles a distinct layer of the threat lifecycle.</p>
+
+  <div class="networks">
+    <div class="network-card blue reveal">
+      <span class="network-icon">🔮</span>
+      <div class="network-name">Predictive Network</div>
+      <div class="network-desc">Behavioral baselining and anomaly pre-scoring. Flags deviations before they become incidents — not just reacting to known signatures.</div>
+      <span class="network-tag blue">PREVENTION LAYER</span>
+    </div>
+    <div class="network-card cyan reveal" style="transition-delay:0.1s">
+      <span class="network-icon">🔍</span>
+      <div class="network-name">Detective Network</div>
+      <div class="network-desc">Real-time MITRE ATT&CK mapping and confidence scoring. Collapses dozens of noisy alerts into a small number of prioritized threat decisions.</div>
+      <span class="network-tag cyan">DETECTION LAYER</span>
+    </div>
+    <div class="network-card green reveal" style="transition-delay:0.2s">
+      <span class="network-icon">🧠</span>
+      <div class="network-name">Advisor Network</div>
+      <div class="network-desc">Powered by Anthropic Claude. Shows its reasoning on every decision. Executes SOAR playbooks with analyst approval and a full audit trail.</div>
+      <span class="network-tag green">RESPONSE LAYER</span>
+    </div>
+  </div>
+
+  <div style="margin-top:24px;padding:16px 20px;background:rgba(59,130,246,0.05);border:1px solid rgba(59,130,246,0.12);border-radius:6px;font-size:13px;color:var(--lgray);font-family:'JetBrains Mono',monospace;" class="reveal">
+    <span style="color:var(--blue)">→</span>&nbsp; Human-in-the-loop by default &nbsp;·&nbsp; Autonomous containment limited to Sev 4–5 with analyst pre-approval &nbsp;·&nbsp; Every decision logged and explainable
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- PRODUCT -->
+<section id="product">
+  <div class="section-eyebrow">Product</div>
+  <h2 class="section-title reveal">Everything a SOC team needs.<br>Nothing they don't.</h2>
+  <p class="section-sub reveal">Every feature shown here is built and running in the live demo environment.</p>
+
+  <div class="features reveal">
+    <div class="feature-cell">
+      <span class="feature-icon">⚡</span>
+      <div class="feature-title">Real-Time Threat Feed</div>
+      <div class="feature-desc">WebSocket stream with MITRE ATT&CK tagging. Stress-tested to 500+ events/min.</div>
+    </div>
+    <div class="feature-cell">
+      <span class="feature-icon">🤖</span>
+      <div class="feature-title">AI Decision Engine</div>
+      <div class="feature-desc">Risk score 0–100 per detection. Analyst approval gates all autonomous actions by default.</div>
+    </div>
+    <div class="feature-cell">
+      <span class="feature-icon">📊</span>
+      <div class="feature-title">SLA Management</div>
+      <div class="feature-desc">Holiday-aware SLA tracking. Auto-escalation via email and Slack. Full audit trail.</div>
+    </div>
+    <div class="feature-cell">
+      <span class="feature-icon">🔒</span>
+      <div class="feature-title">Role-Based Access</div>
+      <div class="feature-desc">ADMIN / ANALYST / VIEWER roles. JWT auth. Every user and AI action logged. MFA on roadmap.</div>
+    </div>
+    <div class="feature-cell">
+      <span class="feature-icon">📋</span>
+      <div class="feature-title">Compliance Dashboard</div>
+      <div class="feature-desc">SOC 2, FedRAMP, ISO 27001 highest-impact controls mapped. Audit-ready evidence per control.</div>
+    </div>
+    <div class="feature-cell">
+      <span class="feature-icon">🧩</span>
+      <div class="feature-title">SOAR Orchestration</div>
+      <div class="feature-desc">Pluggable playbooks: contain, isolate, notify, or open tickets. Fully logged for compliance and forensics.</div>
+    </div>
+    <div class="feature-cell">
+      <span class="feature-icon">🖥️</span>
+      <div class="feature-title">Endpoint Agent</div>
+      <div class="feature-desc">One-click installer. No SIEM required. Monitors failed logins, suspicious processes, and network anomalies. Live in 60 seconds.</div>
+    </div>
+    <div class="feature-cell">
+      <span class="feature-icon">🏢</span>
+      <div class="feature-title">Multi-Tenant</div>
+      <div class="feature-desc">Full tenant isolation. Each customer gets their own data, API keys, and agent fleet. Built for MSSPs from day one.</div>
+    </div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- COMPLIANCE -->
+<section id="compliance">
+  <div class="section-eyebrow">Compliance</div>
+  <h2 class="section-title reveal">Compliance-by-design.<br>Not bolted on.</h2>
+  <p class="section-sub reveal">SOC 2, FedRAMP, and ISO 27001 highest-impact controls are mapped into the architecture from day one. Evidence logs are structured for 3PAO audits.</p>
+
+  <div class="compliance-grid">
+    <div class="compliance-card reveal">
+      <div class="compliance-fraction" style="color:var(--blue)">7 of 8</div>
+      <div class="compliance-label">CONTROLS MAPPED</div>
+      <div class="compliance-name">SOC 2 Type II</div>
+      <div class="compliance-note">CC6/CC7/CC9 control families. Formal Type II audit targeted Q3 2026 with design-partner evidence.</div>
+    </div>
+    <div class="compliance-card reveal" style="transition-delay:0.1s">
+      <div class="compliance-fraction" style="color:var(--red)">6 of 9</div>
+      <div class="compliance-label">CONTROLS MAPPED</div>
+      <div class="compliance-name">FedRAMP Moderate</div>
+      <div class="compliance-note">AC, AU, IR, SI control families. Pre-authorization mapping. Full auth requires 3PAO and agency sponsor.</div>
+    </div>
+    <div class="compliance-card reveal" style="transition-delay:0.2s">
+      <div class="compliance-fraction" style="color:var(--green)">5 of 7</div>
+      <div class="compliance-label">CONTROLS MAPPED</div>
+      <div class="compliance-name">ISO 27001:2022</div>
+      <div class="compliance-note">A.5 and A.8 control families sampled. Full gap assessment planned with first design partner.</div>
+    </div>
+  </div>
+
+  <div class="compliance-disclaimer reveal">
+    <span>⚠️</span>
+    <span>DomeSOC has mapped controls against these frameworks but is not yet formally certified. Fractions reflect highest-impact controls implemented — not audit results. Formal SOC 2 Type II audit targeted Q3 2026.</span>
+  </div>
+</section>
+
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="section-eyebrow">Pricing</div>
+  <h2 class="section-title reveal">Transparent pricing.<br>No per-seat surprises.</h2>
+  <p class="section-sub reveal">Start with supervised AI recommendations. Upgrade to full autonomous response as your team builds confidence.</p>
+
+  <div class="pricing-grid">
+    <!-- Supervised -->
+    <div class="pricing-card reveal">
+      <div class="pricing-name">SUPERVISED</div>
+      <div class="pricing-price">$500</div>
+      <div class="pricing-period">per month · up to 3 analyst seats</div>
+      <ul class="pricing-features">
+        <li>Real-time threat detection</li>
+        <li>MITRE ATT&CK mapping</li>
+        <li>AI recommendations (analyst approves)</li>
+        <li>SOAR playbook execution</li>
+        <li>Slack + email alerts</li>
+        <li>Endpoint agent (unlimited hosts)</li>
+        <li>Compliance dashboard</li>
+        <li class="dim">Autonomous mode</li>
+        <li class="dim">Full Autonomous mode</li>
+      </ul>
+      <a href="mailto:Mashal_qk@yahoo.com?subject=DomeSOC Supervised Plan" class="pricing-cta">Get Started →</a>
+    </div>
+
+    <!-- Autonomous -->
+    <div class="pricing-card featured reveal" style="transition-delay:0.1s">
+      <div class="pricing-name">AUTONOMOUS</div>
+      <div class="pricing-price">$2,500</div>
+      <div class="pricing-period">per month · up to 10 analyst seats</div>
+      <ul class="pricing-features">
+        <li>Everything in Supervised</li>
+        <li>Autonomous mode (configurable threshold)</li>
+        <li>AI auto-executes below threshold</li>
+        <li>Legal acknowledgment framework</li>
+        <li>Priority support</li>
+        <li>Advanced SOAR orchestration</li>
+        <li>Brain memory & campaign detection</li>
+        <li class="dim">Full Autonomous mode</li>
+      </ul>
+      <a href="mailto:Mashal_qk@yahoo.com?subject=DomeSOC Autonomous Plan" class="pricing-cta featured-cta">Get Started →</a>
+    </div>
+
+    <!-- Full Autonomous -->
+    <div class="pricing-card enterprise reveal" style="transition-delay:0.2s">
+      <div class="pricing-name">FULL AUTONOMOUS</div>
+      <div class="pricing-price">$15,000</div>
+      <div class="pricing-period">per month · unlimited seats</div>
+      <ul class="pricing-features">
+        <li>Everything in Autonomous</li>
+        <li>AI handles ALL threats without analyst</li>
+        <li>No analyst required — ever</li>
+        <li>Legal liability framework included</li>
+        <li>Dedicated SLA agreement</li>
+        <li>Custom SOAR playbooks</li>
+        <li>EDR + SIEM integration support</li>
+        <li>Quarterly security review</li>
+      </ul>
+      <a href="mailto:Mashal_qk@yahoo.com?subject=DomeSOC Full Autonomous Plan" class="pricing-cta enterprise-cta">Contact Us →</a>
+    </div>
+  </div>
+
+  <div style="margin-top:32px;padding:16px 20px;background:rgba(34,197,94,0.05);border:1px solid rgba(34,197,94,0.15);border-radius:6px;font-size:13px;color:var(--lgray);text-align:center;" class="reveal">
+    <span style="color:var(--green)">✓</span>&nbsp; All plans include the endpoint agent installer, WebSocket live feed, and full audit trail &nbsp;·&nbsp; No per-detection fees &nbsp;·&nbsp; Cancel anytime
+  </div>
+</section>
+
+<div class="sep"></div><!-- CTA -->
+<div class="cta-section">
+  <div class="section-eyebrow" style="justify-content:center">Get Access</div>
+  <h2 class="section-title reveal">See it live.</h2>
+  <p class="cta-sub reveal">We're onboarding a small number of design partners. If you run a SOC team or MSSP and want early access, reach out directly.</p>
+
+  <div class="cta-form reveal">
+    <input type="email" class="cta-input" placeholder="your@email.com" id="emailInput">
+    <a id="ctaBtn" href="mailto:Mashal_qk@yahoo.com?subject=DomeSOC Demo Access Request" class="btn-primary" style="white-space:nowrap">
+      Request Access →
+    </a>
+  </div>
+  <div class="cta-note reveal" style="margin-top:12px">Demo credentials: admin@ai-soc.com / admin123 — login instantly.</div>
+
+  <div style="margin-top:48px;display:flex;align-items:center;justify-content:center;gap:32px;flex-wrap:wrap;" class="reveal">
+    <a href="https://dome-soc.vercel.app" target="_blank" style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gray);text-decoration:none;display:flex;align-items:center;gap:8px;" class="nav-link">
+      <span style="color:var(--green)">●</span> dome-soc.vercel.app
+    </a>
+    <a href="https://github.com/Mohammad-Khubaib/DomeSOC" target="_blank" style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gray);text-decoration:none;" class="nav-link">
+      github.com/Mohammad-Khubaib/DomeSOC
+    </a>
+    <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);">Seed stage · 2026</span>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo"><span class="dome">Dome</span><span class="soc">SOC</span></div>
+  <div class="footer-links">
+    <a href="https://dome-soc.vercel.app" class="footer-link">Live Demo</a>
+    <a href="https://github.com/Mohammad-Khubaib/DomeSOC" class="footer-link">GitHub</a>
+    <a href="mailto:Mashal_qk@yahoo.com" class="footer-link">Contact</a>
+  </div>
+  <div class="footer-right">© 2026 DomeSOC · Seed Stage</div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // CTA email prefill
+  document.getElementById('ctaBtn').addEventListener('click', function(e) {
+    const email = document.getElementById('emailInput').value.trim();
+    if (email) {
+      this.href = `mailto:Mashal_qk@yahoo.com?subject=DomeSOC Demo Access Request&body=Hi, I'm interested in demo access. My email is ${email}`;
+    }
+  });
+
+  // Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      document.querySelector(a.getAttribute('href'))?.scrollIntoView({behavior:'smooth'});
+    });
+  });
+</script>
+</body>
+</html>
