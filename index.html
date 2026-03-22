@@ -102,6 +102,7 @@ nav {
 .stat:last-child { border-right: none; }
 .stat-num { font-family: "Barlow", sans-serif; font-size: 36px; font-weight: 900; margin-bottom: 6px; letter-spacing: -1px; }
 .stat-label { font-size: 11px; color: var(--lgray); letter-spacing: 1.5px; text-transform: uppercase; margin-top: 2px; }
+.stat-sub { font-size: 12px; color: var(--gray); margin-top: 6px; line-height: 1.4; }
 
 /* ── PROBLEM ─────────────────────────────────────────────────── */
 .problem-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
@@ -243,10 +244,10 @@ footer { border-top: 1px solid var(--border); padding: 40px 0; }
 <!-- STATS BAR -->
 <div class="stats-bar">
   <div class="stats-inner">
-    <div class="stat"><div class="stat-num" style="color:var(--green)">26</div><div class="stat-label">SOAR actions</div></div>
-    <div class="stat"><div class="stat-num" style="color:var(--cyan)">12</div><div class="stat-label">Native integrations</div></div>
-    <div class="stat"><div class="stat-num" style="color:var(--blue)">3</div><div class="stat-label">AI networks</div></div>
-    <div class="stat"><div class="stat-num" style="color:var(--white)">100%</div><div class="stat-label">Decisions explained</div></div>
+    <div class="stat"><div class="stat-num" style="color:var(--green)">26</div><div class="stat-label">SOAR actions</div><div class="stat-sub">Auto-execute or require approval</div></div>
+    <div class="stat"><div class="stat-num" style="color:var(--cyan)">12</div><div class="stat-label">Native integrations</div><div class="stat-sub">CrowdStrike, Okta, Jira &amp; more</div></div>
+    <div class="stat"><div class="stat-num" style="color:var(--blue)">3</div><div class="stat-label">AI networks</div><div class="stat-sub">Running in parallel on every detection</div></div>
+    <div class="stat"><div class="stat-num" style="color:var(--white)">100%</div><div class="stat-label">Decisions explained</div><div class="stat-sub">Plain-English reasoning on every action</div></div>
   </div>
 </div>
 
