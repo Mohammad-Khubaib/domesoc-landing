@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DomeSOC Status</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #080C14; color: #E2E8F0; font-family: "Inter", sans-serif; min-height: 100vh; }
+nav { position: fixed; top: 0; left: 0; right: 0; background: rgba(8,12,20,0.95); border-bottom: 1px solid #1A2535; padding: 16px 48px; display: flex; align-items: center; justify-content: space-between; z-index: 100; }
+.logo { font-size: 16px; font-weight: 700; color: #F8FAFC; text-decoration: none; }
+.logo span { color: #3B82F6; }
+.container { max-width: 760px; margin: 0 auto; padding: 100px 24px 80px; }
+.header { margin-bottom: 40px; }
+.status-banner { display: flex; align-items: center; gap: 16px; padding: 20px 24px; border-radius: 12px; margin-bottom: 32px; }
+.status-banner.all-good { background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.2); }
+.status-banner.degraded { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.2); }
+.status-dot-lg { width: 16px; height: 16px; border-radius: 50%; flex-shrink: 0; }
+.status-title { font-size: 18px; font-weight: 600; }
+.services { display: flex; flex-direction: column; gap: 8px; margin-bottom: 40px; }
+.service { background: #0F1923; border: 1px solid #1A2535; border-radius: 10px; padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; }
+.service-name { font-size: 14px; font-weight: 500; }
+.service-url { font-size: 11px; color: #64748B; font-family: "JetBrains Mono", monospace; margin-top: 2px; }
+.service-status { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; }
+.dot { width: 8px; height: 8px; border-radius: 50%; }
+.dot-green { background: #22C55E; animation: pulse 2s infinite; }
+.dot-red { background: #EF4444; animation: pulse 2s infinite; }
+.dot-yellow { background: #EAB308; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+.updated { font-size: 11px; color: #334155; font-family: "JetBrains Mono", monospace; margin-bottom: 32px; }
+.section-title { font-size: 11px; color: #64748B; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 16px; }
+footer { border-top: 1px solid #1A2535; padding: 24px 48px; text-align: center; font-size: 12px; color: #334155; }
+footer a { color: #334155; text-decoration: none; margin: 0 8px; }
+footer a:hover { color: #64748B; }
+</style>
+</head>
+<body>
+<nav>
+  <a href="/" class="logo">Dome<span>SOC</span></a>
+  <a href="/" style="font-size:13px;color:#64748B;text-decoration:none;">Back to home</a>
+</nav>
+<div class="container">
+  <div class="header">
+    <div style="font-size:11px;color:#3B82F6;letter-spacing:3px;text-transform:uppercase;margin-bottom:12px;">System Status</div>
+    <h1 style="font-size:28px;font-weight:700;color:#F8FAFC;">DomeSOC Status</h1>
+  </div>
+
+  <div id="banner" class="status-banner all-good">
+    <div id="banner-dot" class="status-dot-lg" style="background:#22C55E"></div>
+    <div>
+      <div id="banner-title" class="status-title" style="color:#22C55E">All Systems Operational</div>
+      <div style="font-size:13px;color:#64748B;margin-top:2px;">All DomeSOC services are running normally</div>
+    </div>
+  </div>
+
+  <div class="section-title">Services</div>
+  <div class="services" id="services">
+    <div class="service">
+      <div>
+        <div class="service-name">DomeSOC API</div>
+        <div class="service-url">ai-soc-production.up.railway.app</div>
+      </div>
+      <div class="service-status" id="api-status">
+        <div class="dot dot-yellow"></div>
+        <span style="color:#EAB308">Checking...</span>
+      </div>
+    </div>
+    <div class="service">
+      <div>
+        <div class="service-name">DomeSOC App</div>
+        <div class="service-url">app.domesoc.com</div>
+      </div>
+      <div class="service-status" id="app-status">
+        <div class="dot dot-yellow"></div>
+        <span style="color:#EAB308">Checking...</span>
+      </div>
+    </div>
+    <div class="service">
+      <div>
+        <div class="service-name">DomeSOC Landing</div>
+        <div class="service-url">domesoc.com</div>
+      </div>
+      <div class="service-status" id="landing-status">
+        <div class="dot dot-green"></div>
+        <span style="color:#22C55E">Operational</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="updated" id="updated">Last checked: --</div>
+
+  <div class="section-title">Incident History</div>
+  <div style="background:#0F1923;border:1px solid #1A2535;border-radius:10px;padding:20px 24px;font-size:13px;color:#334155;text-align:center;">
+    No incidents reported in the last 90 days.
+  </div>
+</div>
+
+<footer>
+  <a href="/">Home</a>
+  <a href="/terms.html">Terms</a>
+  <a href="/privacy.html">Privacy</a>
+  <span style="margin:0 8px">·</span>
+  <span>© 2026 DomeSOC</span>
+</footer>
+
+<script>
+async function checkService(url, statusId) {
+  const el = document.getElementById(statusId);
+  try {
+    const res = await fetch(url, { method: 'GET', mode: 'no-cors', cache: 'no-cache' });
+    el.innerHTML = '<div class="dot dot-green"></div><span style="color:#22C55E">Operational</span>';
+    return true;
+  } catch {
+    el.innerHTML = '<div class="dot dot-red"></div><span style="color:#EF4444">Down</span>';
+    return false;
+  }
+}
+
+async function checkAll() {
+  const results = await Promise.all([
+    checkService('https://ai-soc-production.up.railway.app/api/health', 'api-status'),
+    checkService('https://app.domesoc.com', 'app-status'),
+  ]);
+  const allGood = results.every(r => r);
+  const banner = document.getElementById('banner');
+  const bannerDot = document.getElementById('banner-dot');
+  const bannerTitle = document.getElementById('banner-title');
+  if (allGood) {
+    banner.className = 'status-banner all-good';
+    bannerDot.style.background = '#22C55E';
+    bannerTitle.style.color = '#22C55E';
+    bannerTitle.textContent = 'All Systems Operational';
+  } else {
+    banner.className = 'status-banner degraded';
+    bannerDot.style.background = '#EAB308';
+    bannerTitle.style.color = '#EAB308';
+    bannerTitle.textContent = 'Some Systems Degraded';
+  }
+  document.getElementById('updated').textContent = 'Last checked: ' + new Date().toLocaleTimeString();
+}
+
+checkAll();
+setInterval(checkAll, 60000);
+</script>
+</body>
+</html>
