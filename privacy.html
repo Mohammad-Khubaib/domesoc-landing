@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy — DomeSOC</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #080C14; color: #E2E8F0; font-family: "Inter", sans-serif; font-weight: 300; line-height: 1.8; }
+nav { position: fixed; top: 0; left: 0; right: 0; background: rgba(8,12,20,0.95); border-bottom: 1px solid #1A2535; padding: 16px 48px; display: flex; align-items: center; justify-content: space-between; z-index: 100; }
+.logo { font-size: 16px; font-weight: 700; color: #F8FAFC; text-decoration: none; }
+.logo span { color: #3B82F6; }
+.container { max-width: 760px; margin: 0 auto; padding: 120px 24px 80px; }
+h1 { font-size: 32px; font-weight: 700; color: #F8FAFC; margin-bottom: 8px; }
+.meta { font-size: 13px; color: #64748B; margin-bottom: 48px; }
+h2 { font-size: 18px; font-weight: 600; color: #F8FAFC; margin: 40px 0 12px; }
+p { font-size: 14px; color: #94A3B8; margin-bottom: 16px; }
+ul { padding-left: 20px; margin-bottom: 16px; }
+li { font-size: 14px; color: #94A3B8; margin-bottom: 6px; }
+a { color: #3B82F6; }
+table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+th { background: #0F1923; color: #94A3B8; font-size: 12px; font-weight: 600; text-align: left; padding: 10px 14px; border: 1px solid #1A2535; letter-spacing: 0.5px; }
+td { font-size: 13px; color: #94A3B8; padding: 10px 14px; border: 1px solid #1A2535; vertical-align: top; }
+footer { border-top: 1px solid #1A2535; padding: 24px 48px; text-align: center; font-size: 12px; color: #334155; }
+</style>
+</head>
+<body>
+<nav>
+  <a href="/" class="logo">Dome<span>SOC</span></a>
+  <a href="/" style="font-size:13px;color:#64748B;text-decoration:none;">← Back to home</a>
+</nav>
+<div class="container">
+  <h1>Privacy Policy</h1>
+  <div class="meta">Last updated: March 22, 2026</div>
+
+  <p>DomeSOC ("we," "us," or "our") is committed to protecting your privacy. This Privacy Policy explains what data we collect, how we use it, and your rights regarding your data.</p>
+
+  <h2>1. What Data We Collect</h2>
+  <table>
+    <tr><th>Data Type</th><th>What It Includes</th><th>Why We Collect It</th></tr>
+    <tr><td>Account data</td><td>Name, email, company name, password (hashed)</td><td>To create and manage your account</td></tr>
+    <tr><td>Security event data</td><td>IP addresses, hostnames, usernames, event types, timestamps sent via your SIEM or agent</td><td>To provide threat detection and analysis</td></tr>
+    <tr><td>Usage data</td><td>Detection counts, SOAR actions taken, API key usage</td><td>To enforce plan limits and improve the service</td></tr>
+    <tr><td>Agent data</td><td>Hostname, OS, network connections, process names from installed agents</td><td>To provide endpoint monitoring</td></tr>
+    <tr><td>Payment data</td><td>Handled entirely by Stripe — we never see full card numbers</td><td>To process subscriptions</td></tr>
+  </table>
+
+  <h2>2. What We Do NOT Collect</h2>
+  <ul>
+    <li>Keystroke logs or screen recordings</li>
+    <li>Personal files or document contents</li>
+    <li>Passwords or credentials from monitored systems</li>
+    <li>Personal communications (email content, chat messages)</li>
+    <li>Any data beyond security events and system metadata</li>
+  </ul>
+
+  <h2>3. How We Use Your Data</h2>
+  <ul>
+    <li>Analyze security events to detect threats using AI</li>
+    <li>Execute SOAR actions you have configured</li>
+    <li>Generate weekly security reports</li>
+    <li>Send alerts and notifications you have enabled</li>
+    <li>Improve detection accuracy and AI model performance</li>
+    <li>Provide customer support</li>
+  </ul>
+
+  <h2>4. Data Retention</h2>
+  <p>Security event data and detections are retained for 90 days by default. Incidents and audit logs are retained for 1 year. Account data is retained until account deletion plus 30 days. You can request earlier deletion by contacting hello@domesoc.com.</p>
+
+  <h2>5. Data Sharing</h2>
+  <p>We do not sell your data. We share data only with:</p>
+  <ul>
+    <li><strong style="color:#E2E8F0">Supabase</strong> — database hosting (data stored in US)</li>
+    <li><strong style="color:#E2E8F0">Railway</strong> — backend hosting (data processed in US)</li>
+    <li><strong style="color:#E2E8F0">Anthropic (Claude)</strong> — AI analysis of security events (no data retained by Anthropic per their API terms)</li>
+    <li><strong style="color:#E2E8F0">Resend</strong> — email delivery for alerts and reports</li>
+    <li><strong style="color:#E2E8F0">Stripe</strong> — payment processing</li>
+    <li><strong style="color:#E2E8F0">VirusTotal</strong> — IP reputation lookups (only source IPs shared, no customer-identifying data)</li>
+  </ul>
+
+  <h2>6. Security</h2>
+  <p>All data is transmitted over HTTPS/TLS. API keys are stored hashed. Passwords are bcrypt hashed with salt rounds of 12. We do not store plaintext credentials of any kind. Security events are logically isolated per tenant — your data is never accessible to other customers.</p>
+
+  <h2>7. Your Rights</h2>
+  <p>You have the right to:</p>
+  <ul>
+    <li>Access all data we hold about you</li>
+    <li>Request correction of inaccurate data</li>
+    <li>Request deletion of your data</li>
+    <li>Export your detection and incident data</li>
+    <li>Opt out of AI model training (contact us to request this)</li>
+  </ul>
+  <p>To exercise any of these rights, email <a href="mailto:hello@domesoc.com">hello@domesoc.com</a></p>
+
+  <h2>8. Cookies</h2>
+  <p>The DomeSOC web application uses localStorage (not cookies) to store your authentication token locally in your browser. No third-party tracking cookies are used. The landing page (domesoc.com) does not use any tracking or analytics cookies.</p>
+
+  <h2>9. Children</h2>
+  <p>DomeSOC is a B2B security platform intended for use by businesses and security professionals. We do not knowingly collect data from individuals under 18 years of age.</p>
+
+  <h2>10. Changes to This Policy</h2>
+  <p>We may update this Privacy Policy periodically. We will notify you of material changes by email. The date at the top of this page reflects the most recent update.</p>
+
+  <h2>11. Contact</h2>
+  <p>Privacy questions or requests: <a href="mailto:hello@domesoc.com">hello@domesoc.com</a></p>
+</div>
+<footer>© 2026 DomeSOC · <a href="/privacy.html">Privacy Policy</a> · <a href="/terms.html">Terms of Service</a></footer>
+</body>
+</html>
