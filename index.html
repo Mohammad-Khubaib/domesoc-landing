@@ -927,5 +927,131 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDemo();
 @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
 </style>
 
+
+<!-- GUIDED TOUR -->
+<div id="tourTooltip" style="display:none;position:fixed;z-index:10000;pointer-events:none;">
+  <div style="background:#1d4ed8;color:#fff;padding:12px 16px;border-radius:10px;font-size:13px;font-weight:600;max-width:260px;box-shadow:0 8px 32px rgba(29,78,216,0.4);position:relative;">
+    <div id="tourText"></div>
+    <div id="tourArrow" style="position:absolute;width:10px;height:10px;background:#1d4ed8;transform:rotate(45deg);"></div>
+  </div>
+</div>
+
+<script>
+const TOUR_STEPS = [
+  { text: "👆 Click here to watch threats appear in real-time", targetId: "startDemoBtn", arrow: "bottom" },
+  { text: "👆 Click any detection to see the full AI analysis", targetId: "demoDetectionList", arrow: "top", waitFor: "detections" },
+  { text: "👆 See the complete AI response timeline with every step", targetId: "tab-detail", arrow: "bottom" },
+  { text: "👆 Check pending analyst approvals here", targetId: "tab-approvals", arrow: "bottom" },
+  { text: "👆 See correlated incidents created by the AI", targetId: "tab-incidents", arrow: "bottom" },
+];
+
+let tourStep = 0;
+let tourActive = false;
+let tourTimeout = null;
+
+function startTour() {
+  tourStep = 0;
+  tourActive = true;
+  showTourStep();
+}
+
+function showTourStep() {
+  if (!tourActive || tourStep >= TOUR_STEPS.length) {
+    hideTour();
+    return;
+  }
+  const step = TOUR_STEPS[tourStep];
+  const target = document.getElementById(step.targetId);
+  if (!target) { tourStep++; showTourStep(); return; }
+
+  const rect = target.getBoundingClientRect();
+  const tooltip = document.getElementById("tourTooltip");
+  const text = document.getElementById("tourText");
+  const arrow = document.getElementById("tourArrow");
+
+  text.textContent = step.text;
+  tooltip.style.display = "block";
+
+  // Position tooltip
+  if (step.arrow === "bottom") {
+    tooltip.style.left = (rect.left + rect.width/2 - 130) + "px";
+    tooltip.style.top = (rect.top - 70 + window.scrollY) + "px";
+    arrow.style.bottom = "-5px";
+    arrow.style.top = "auto";
+    arrow.style.left = "50%";
+    arrow.style.transform = "translateX(-50%) rotate(45deg)";
+  } else {
+    tooltip.style.left = (rect.left + rect.width/2 - 130) + "px";
+    tooltip.style.top = (rect.bottom + 10 + window.scrollY) + "px";
+    arrow.style.top = "-5px";
+    arrow.style.bottom = "auto";
+    arrow.style.left = "50%";
+    arrow.style.transform = "translateX(-50%) rotate(45deg)";
+  }
+
+  // Add pulse ring to target
+  target.style.outline = "2px solid #3b82f6";
+  target.style.outlineOffset = "3px";
+  target.style.boxShadow = "0 0 0 4px rgba(59,130,246,0.3)";
+  target.style.transition = "all 0.3s";
+
+  // Auto advance after 4s
+  clearTimeout(tourTimeout);
+  tourTimeout = setTimeout(() => {
+    clearTargetHighlight(step.targetId);
+    tourStep++;
+    // Skip detail step until demo has run
+    if (tourStep === 1 && document.getElementById("demoDetectionList").children.length < 2) {
+      tourStep = 0; // restart from start demo button
+    }
+    showTourStep();
+  }, 4000);
+}
+
+function clearTargetHighlight(id) {
+  const el = document.getElementById(id);
+  if (el) {
+    el.style.outline = "";
+    el.style.outlineOffset = "";
+    el.style.boxShadow = "";
+  }
+}
+
+function hideTour() {
+  tourActive = false;
+  document.getElementById("tourTooltip").style.display = "none";
+  clearTimeout(tourTimeout);
+  TOUR_STEPS.forEach(s => clearTargetHighlight(s.targetId));
+}
+
+// Start tour when demo opens
+const origOpenDemo = openDemo;
+window.openDemo = function() {
+  origOpenDemo();
+  setTimeout(startTour, 800);
+};
+
+// Advance tour when user clicks demo button
+const origStartLiveDemo = startLiveDemo;
+window.startLiveDemo = function() {
+  origStartLiveDemo();
+  clearTargetHighlight("startDemoBtn");
+  tourStep = 1;
+  setTimeout(showTourStep, 2000);
+};
+
+// Advance tour when detection clicked
+const origShowDetectionDetail = showDetectionDetail;
+window.showDetectionDetail = function(id) {
+  origShowDetectionDetail(id);
+  hideTour();
+  setTimeout(() => {
+    tourStep = 3;
+    tourActive = true;
+    showTourStep();
+  }, 500);
+};
+</script>
+
 </body>
 </html>
