@@ -218,7 +218,7 @@ footer { border-top: 1px solid var(--border); padding: 40px 0; }
   <p class="hero-sub">DomeSOC detects threats, makes decisions, and executes containment — autonomously or with analyst approval, depending on your chosen mode. Not another dashboard. An AI-powered SOC that works at machine speed, 24/7.</p>
   <div class="hero-cta">
     <a href="https://app.domesoc.com/signup" class="btn-hero">Start 14-Day Free Trial →</a>
-    <a href="https://app.domesoc.com" target="_blank" class="btn-hero-outline"><span class="pulse"></span> See Live Demo</a>
+    <button onclick="openDemo()" class="btn-hero-outline"><span class="pulse"></span> See Live Demo</button>
     <a href="#how-it-works" class="btn-hero-ghost">How it works ↓</a>
   </div>
   <div class="terminal-wrap">
@@ -606,7 +606,7 @@ footer { border-top: 1px solid var(--border); padding: 40px 0; }
   <p class="reveal">Be among the first teams to run a fully autonomous security operation with DomeSOC. No per-seat pricing. No professional services. Just AI that works.</p>
   <div class="hero-cta reveal">
     <a href="https://app.domesoc.com/signup" class="btn-hero">Start 14-Day Free Trial →</a>
-    <a href="https://app.domesoc.com" target="_blank" class="btn-hero-outline"><span class="pulse"></span> See Live Demo</a>
+    <button onclick="openDemo()" class="btn-hero-outline"><span class="pulse"></span> See Live Demo</button>
   </div>
 </div>
 
@@ -630,5 +630,302 @@ const observer = new IntersectionObserver((entries) => {
 }, { threshold: 0.1 });
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 </script>
+
+<!-- DEMO MODAL -->
+<div id="demoModal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);overflow-y:auto;">
+  <div style="max-width:1100px;margin:40px auto;padding:0 20px 40px;">
+    <!-- Modal Header -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span style="font-family:Barlow,sans-serif;font-weight:900;font-size:22px;color:#fff;">Dome<span style="color:#3B82F6">SOC</span></span>
+        <span style="background:#ef4444;color:#fff;font-size:10px;font-weight:700;padding:3px 8px;border-radius:99px;letter-spacing:1px;">LIVE DEMO</span>
+      </div>
+      <button onclick="closeDemo()" style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:#fff;padding:8px 16px;border-radius:8px;cursor:pointer;font-size:14px;">✕ Close</button>
+    </div>
+
+    <!-- Demo Nav -->
+    <div style="display:flex;gap:8px;margin-bottom:20px;background:#111;border:1px solid #1f2937;border-radius:12px;padding:8px;">
+      <button onclick="showDemoTab('detections')" id="tab-detections" style="flex:1;padding:8px 16px;border-radius:8px;border:none;background:#1d4ed8;color:#fff;font-size:13px;font-weight:600;cursor:pointer;">🔍 Detections</button>
+      <button onclick="showDemoTab('detail')" id="tab-detail" style="flex:1;padding:8px 16px;border-radius:8px;border:none;background:transparent;color:#6b7280;font-size:13px;font-weight:600;cursor:pointer;">🔬 Detection Details</button>
+      <button onclick="showDemoTab('approvals')" id="tab-approvals" style="flex:1;padding:8px 16px;border-radius:8px;border:none;background:transparent;color:#6b7280;font-size:13px;font-weight:600;cursor:pointer;">✅ Approvals</button>
+      <button onclick="showDemoTab('incidents')" id="tab-incidents" style="flex:1;padding:8px 16px;border-radius:8px;border:none;background:transparent;color:#6b7280;font-size:13px;font-weight:600;cursor:pointer;">🚨 Incidents</button>
+    </div>
+
+    <!-- Detections Tab -->
+    <div id="demo-detections">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+        <div>
+          <h2 style="color:#fff;font-size:20px;font-weight:700;margin:0;">Live Detections</h2>
+          <p style="color:#6b7280;font-size:13px;margin:4px 0 0;">AI-powered threat detection · real-time analysis</p>
+        </div>
+        <button onclick="startLiveDemo()" id="startDemoBtn" style="background:#1d4ed8;color:#fff;border:none;padding:10px 20px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px;">
+          <span id="demoBtnDot" style="width:8px;height:8px;background:#4ade80;border-radius:50%;display:inline-block;"></span>
+          Start Live Demo
+        </button>
+      </div>
+      <div id="demoDetectionList" style="display:flex;flex-direction:column;gap:8px;min-height:400px;">
+        <div style="text-align:center;padding:80px 20px;color:#4b5563;">
+          <div style="font-size:48px;margin-bottom:16px;">🛡️</div>
+          <div style="font-size:16px;font-weight:600;color:#6b7280;">Click "Start Live Demo" to see AI in action</div>
+          <div style="font-size:13px;color:#4b5563;margin-top:8px;">Watch threats get detected, analyzed, and contained in real-time</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Detail Tab -->
+    <div id="demo-detail" style="display:none;">
+      <div style="margin-bottom:16px;">
+        <button onclick="showDemoTab('detections')" style="background:transparent;border:none;color:#3B82F6;cursor:pointer;font-size:14px;">← Back to Detections</button>
+      </div>
+      <div id="demoDetailContent"></div>
+    </div>
+
+    <!-- Approvals Tab -->
+    <div id="demo-approvals" style="display:none;">
+      <h2 style="color:#fff;font-size:20px;font-weight:700;margin:0 0 16px;">Analyst Approvals</h2>
+      <div id="demoApprovalList" style="display:flex;flex-direction:column;gap:12px;"></div>
+    </div>
+
+    <!-- Incidents Tab -->
+    <div id="demo-incidents" style="display:none;">
+      <h2 style="color:#fff;font-size:20px;font-weight:700;margin:0 0 16px;">Incident Queue</h2>
+      <div id="demoIncidentList" style="display:flex;flex-direction:column;gap:12px;"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const DEMO_THREATS = [
+  { id:'d1', type:'RANSOMWARE_EXECUTION', host:'CORP-WS-77', ip:'185.220.101.47', severity:5, confidence:97, score:94, action:'AUTO_CONTAIN', mitre:['T1486','T1490'], status:'CONTAINED', time:'just now' },
+  { id:'d2', type:'CREDENTIAL_STUFFING', host:'AUTH-SRV-01', ip:'193.32.162.88', severity:4, confidence:89, score:78, action:'ESCALATE_TO_ANALYST', mitre:['T1110','T1078'], status:'OPEN', time:'2m ago' },
+  { id:'d3', type:'LATERAL_MOVEMENT', host:'CORP-WS-99', ip:'10.0.1.45', severity:4, confidence:82, score:71, action:'AUTO_CONTAIN', mitre:['T1021','T1550'], status:'CONTAINED', time:'5m ago' },
+  { id:'d4', type:'DATA_EXFILTRATION', host:'FILE-SRV-03', ip:'45.152.67.21', severity:5, confidence:94, score:91, action:'AUTO_CONTAIN', mitre:['T1041','T1048'], status:'CONTAINED', time:'8m ago' },
+  { id:'d5', type:'BRUTE_FORCE', host:'VPN-GW-01', ip:'91.108.56.12', severity:3, confidence:76, score:58, action:'MONITOR', mitre:['T1110'], status:'OPEN', time:'12m ago' },
+];
+
+const SOAR_STEPS = [
+  { icon:'🔍', label:'Detection received', detail:'Crowdstrike EDR event ingested via webhook', time:0, color:'#3B82F6' },
+  { icon:'🧠', label:'Brain Memory analyzed', detail:'Cross-referenced 847 similar patterns — confirmed threat signature', time:800, color:'#8B5CF6' },
+  { icon:'📡', label:'Predictive AI scored', detail:'Behavioral baseline deviation: 94th percentile — high confidence threat', time:1600, color:'#F59E0B' },
+  { icon:'🔬', label:'Detective AI mapped', detail:'MITRE T1486 (Data Encrypted for Impact) · T1490 (Inhibit System Recovery)', time:2400, color:'#EF4444' },
+  { icon:'⚖️', label:'AI Decision made', detail:'AUTO_CONTAIN — Score 94/100 — Confidence HIGH — 4 agents consensus', time:3200, color:'#10B981' },
+  { icon:'🔒', label:'block_ip executed', detail:'185.220.101.47 blocked at perimeter firewall via CrowdStrike', time:4000, color:'#06B6D4' },
+  { icon:'🖥️', label:'isolate_host executed', detail:'CORP-WS-77 quarantined from network — forensic snapshot taken', time:4600, color:'#06B6D4' },
+  { icon:'👤', label:'disable_account executed', detail:'jsmith@corp.com suspended — session tokens revoked via Okta', time:5200, color:'#06B6D4' },
+  { icon:'📋', label:'Jira ticket created', detail:'SOC-2847 opened — P1 severity — assigned to Incident Response team', time:5800, color:'#6366F1' },
+  { icon:'✅', label:'Threat CONTAINED', detail:'Full audit trail saved · 0 analyst interventions · 6.2s response time', time:6400, color:'#10B981' },
+];
+
+let demoRunning = false;
+let demoDetections = [];
+let selectedDetection = null;
+
+function openDemo() {
+  document.getElementById('demoModal').style.display = 'block';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeDemo() {
+  document.getElementById('demoModal').style.display = 'none';
+  document.body.style.overflow = '';
+  demoRunning = false;
+}
+
+function showDemoTab(tab) {
+  ['detections','detail','approvals','incidents'].forEach(t => {
+    document.getElementById('demo-' + t).style.display = 'none';
+    const btn = document.getElementById('tab-' + t);
+    if (btn) { btn.style.background = 'transparent'; btn.style.color = '#6b7280'; }
+  });
+  document.getElementById('demo-' + tab).style.display = 'block';
+  const activeBtn = document.getElementById('tab-' + tab);
+  if (activeBtn) { activeBtn.style.background = '#1d4ed8'; activeBtn.style.color = '#fff'; }
+  
+  if (tab === 'approvals') renderApprovals();
+  if (tab === 'incidents') renderIncidents();
+}
+
+function sevColor(s) {
+  return s >= 5 ? '#ef4444' : s >= 4 ? '#f97316' : s >= 3 ? '#eab308' : '#3b82f6';
+}
+function statusBadge(s) {
+  if (s === 'CONTAINED') return '<span style="background:#052e16;color:#4ade80;border:1px solid #166534;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:700;">CONTAINED</span>';
+  if (s === 'OPEN') return '<span style="background:#450a0a;color:#f87171;border:1px solid #991b1b;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:700;">OPEN</span>';
+  return '<span style="background:#1e293b;color:#94a3b8;border:1px solid #334155;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:700;">' + s + '</span>';
+}
+
+function renderDetectionCard(d, animate) {
+  return `<div onclick="showDetectionDetail('${d.id}')" style="background:#111827;border:1px solid ${d.status==='CONTAINED'?'#166534':'#374151'};border-left:4px solid ${sevColor(d.severity)};border-radius:12px;padding:16px 20px;cursor:pointer;transition:all 0.2s;${animate?'animation:fadeIn 0.4s ease;':''}">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span style="font-size:13px;font-weight:700;color:#fff;">${d.type.replace(/_/g,' ')}</span>
+        ${statusBadge(d.status)}
+        ${d.mitre.map(m => `<span style="background:#1e1b4b;color:#a5b4fc;border:1px solid #3730a3;padding:2px 6px;border-radius:4px;font-size:10px;font-weight:600;">${m}</span>`).join('')}
+      </div>
+      <div style="display:flex;align-items:center;gap:16px;">
+        <span style="color:#9ca3af;font-size:12px;">${d.time}</span>
+        <span style="background:#1e293b;color:#94a3b8;border:1px solid #334155;padding:2px 8px;border-radius:6px;font-size:11px;">Score: ${d.score}/100</span>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:16px;margin-top:8px;">
+      <span style="color:#6b7280;font-size:12px;">🖥️ ${d.host}</span>
+      <span style="color:#6b7280;font-size:12px;">🌐 ${d.ip}</span>
+      <span style="color:#6b7280;font-size:12px;">Confidence: ${d.confidence}%</span>
+      <span style="color:${d.action==='AUTO_CONTAIN'?'#4ade80':d.action==='MONITOR'?'#60a5fa':'#f97316'};font-size:12px;font-weight:600;">⚡ ${d.action.replace(/_/g,' ')}</span>
+    </div>
+  </div>`;
+}
+
+function startLiveDemo() {
+  if (demoRunning) return;
+  demoRunning = true;
+  const btn = document.getElementById('startDemoBtn');
+  btn.innerHTML = '<span style="width:8px;height:8px;background:#ef4444;border-radius:50%;display:inline-block;animation:pulse 1s infinite;"></span> Demo Running...';
+  btn.style.background = '#374151';
+  
+  const list = document.getElementById('demoDetectionList');
+  list.innerHTML = '';
+  demoDetections = [];
+
+  DEMO_THREATS.forEach((threat, i) => {
+    setTimeout(() => {
+      demoDetections.unshift(threat);
+      list.innerHTML = demoDetections.map((d,idx) => renderDetectionCard(d, idx===0)).join('');
+      
+      // Show contained animation after 2s for auto-contain threats
+      if (threat.action === 'AUTO_CONTAIN' && threat.status !== 'CONTAINED') {
+        setTimeout(() => {
+          threat.status = 'CONTAINED';
+          list.innerHTML = demoDetections.map(d => renderDetectionCard(d, false)).join('');
+        }, 2000);
+      }
+    }, i * 1500);
+  });
+
+  setTimeout(() => {
+    demoRunning = false;
+    btn.innerHTML = '<span style="width:8px;height:8px;background:#4ade80;border-radius:50%;display:inline-block;"></span> Replay Demo';
+    btn.style.background = '#1d4ed8';
+  }, DEMO_THREATS.length * 1500 + 2500);
+}
+
+function showDetectionDetail(id) {
+  selectedDetection = DEMO_THREATS.find(d => d.id === id);
+  if (!selectedDetection) return;
+  showDemoTab('detail');
+  
+  const d = selectedDetection;
+  const container = document.getElementById('demoDetailContent');
+  
+  container.innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
+      <div style="background:#111827;border:1px solid #1f2937;border-radius:12px;padding:20px;">
+        <div style="color:#6b7280;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">Detection</div>
+        <div style="font-size:18px;font-weight:700;color:#fff;margin-bottom:8px;">${d.type.replace(/_/g,' ')}</div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="display:flex;justify-content:space-between;"><span style="color:#6b7280;font-size:13px;">Host</span><span style="color:#fff;font-size:13px;">${d.host}</span></div>
+          <div style="display:flex;justify-content:space-between;"><span style="color:#6b7280;font-size:13px;">Source IP</span><span style="color:#fff;font-size:13px;">${d.ip}</span></div>
+          <div style="display:flex;justify-content:space-between;"><span style="color:#6b7280;font-size:13px;">Severity</span><span style="color:${sevColor(d.severity)};font-size:13px;font-weight:700;">SEV ${d.severity}</span></div>
+          <div style="display:flex;justify-content:space-between;"><span style="color:#6b7280;font-size:13px;">Confidence</span><span style="color:#fff;font-size:13px;">${d.confidence}%</span></div>
+        </div>
+      </div>
+      <div style="background:#111827;border:1px solid #1f2937;border-radius:12px;padding:20px;">
+        <div style="color:#6b7280;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">AI Decision</div>
+        <div style="font-size:18px;font-weight:700;color:${d.action==='AUTO_CONTAIN'?'#4ade80':'#f97316'};margin-bottom:8px;">${d.action.replace(/_/g,' ')}</div>
+        <div style="background:#0f172a;border-radius:8px;padding:12px;margin-bottom:12px;">
+          <div style="color:#94a3b8;font-size:12px;line-height:1.6;">Known Tor exit node detected. ${d.confidence}% confidence match against ransomware campaign signatures. MITRE ${d.mitre.join(', ')} mapped. Immediate containment recommended to prevent lateral spread.</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div style="flex:1;background:#1f2937;border-radius:99px;height:6px;overflow:hidden;">
+            <div style="width:${d.score}%;background:linear-gradient(90deg,#3b82f6,#10b981);height:100%;border-radius:99px;"></div>
+          </div>
+          <span style="color:#fff;font-size:13px;font-weight:700;">${d.score}/100</span>
+        </div>
+      </div>
+    </div>
+    
+    <div style="background:#111827;border:1px solid #1f2937;border-radius:12px;padding:20px;">
+      <div style="color:#6b7280;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;">⚡ AI Response Timeline</div>
+      <div id="demoTimeline" style="display:flex;flex-direction:column;gap:4px;"></div>
+    </div>
+  `;
+  
+  // Animate timeline steps
+  const timeline = document.getElementById('demoTimeline');
+  SOAR_STEPS.forEach((step, i) => {
+    setTimeout(() => {
+      const el = document.createElement('div');
+      el.style.cssText = 'display:flex;align-items:flex-start;gap:12px;padding:10px;background:#0f172a;border-radius:8px;border-left:3px solid ' + step.color + ';animation:fadeIn 0.3s ease;';
+      el.innerHTML = `
+        <span style="font-size:18px;flex-shrink:0;">${step.icon}</span>
+        <div>
+          <div style="color:#fff;font-size:13px;font-weight:600;">${step.label}</div>
+          <div style="color:#6b7280;font-size:12px;margin-top:2px;">${step.detail}</div>
+        </div>
+        <span style="margin-left:auto;color:#4b5563;font-size:11px;flex-shrink:0;">${(step.time/1000).toFixed(1)}s</span>
+      `;
+      timeline.appendChild(el);
+      timeline.scrollTop = timeline.scrollHeight;
+    }, step.time);
+  });
+}
+
+function renderApprovals() {
+  const list = document.getElementById('demoApprovalList');
+  const pendingThreats = DEMO_THREATS.filter(d => d.action === 'ESCALATE_TO_ANALYST');
+  if (pendingThreats.length === 0) {
+    list.innerHTML = '<div style="text-align:center;padding:60px;color:#4b5563;"><div style="font-size:48px;margin-bottom:12px;">✅</div><div style="font-size:16px;">No pending approvals</div></div>';
+    return;
+  }
+  list.innerHTML = pendingThreats.map(d => `
+    <div style="background:#111827;border:1px solid #374151;border-radius:12px;padding:20px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+        <div>
+          <span style="color:#fff;font-size:14px;font-weight:700;">${d.type.replace(/_/g,' ')}</span>
+          <span style="margin-left:8px;background:#450a0a;color:#f87171;border:1px solid #991b1b;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:700;">PENDING</span>
+        </div>
+        <span style="color:#9ca3af;font-size:12px;">Score: ${d.score}/100</span>
+      </div>
+      <div style="color:#6b7280;font-size:13px;margin-bottom:16px;">🖥️ ${d.host} · 🌐 ${d.ip} · SEV ${d.severity}</div>
+      <div style="background:#0f172a;border-radius:8px;padding:12px;margin-bottom:16px;">
+        <div style="color:#94a3b8;font-size:12px;">AI Reasoning: High-confidence credential stuffing attack detected. Recommend disabling affected accounts and blocking source IP immediately.</div>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button onclick="this.parentElement.parentElement.style.opacity='0.5';this.textContent='✓ Approved'" style="flex:1;background:#166534;color:#4ade80;border:1px solid #166534;padding:10px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;">✅ Approve & Execute</button>
+        <button onclick="this.parentElement.parentElement.style.opacity='0.5';this.textContent='✗ Dismissed'" style="background:#1e293b;color:#6b7280;border:1px solid #374151;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;">Dismiss</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderIncidents() {
+  const list = document.getElementById('demoIncidentList');
+  list.innerHTML = [
+    { title:'[INCIDENT] Ransomware Execution on CORP-WS-77', sev:'CRITICAL', status:'CONTAINED', time:'6m ago', detections:3 },
+    { title:'[INCIDENT] Lateral Movement Campaign', sev:'HIGH', status:'INVESTIGATING', time:'18m ago', detections:5 },
+    { title:'[INCIDENT] Data Exfiltration Attempt', sev:'CRITICAL', status:'CONTAINED', time:'23m ago', detections:2 },
+  ].map(i => `
+    <div style="background:#111827;border:1px solid ${i.status==='CONTAINED'?'#166534':'#374151'};border-radius:12px;padding:20px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+        <span style="color:#fff;font-size:14px;font-weight:700;">${i.title}</span>
+        ${statusBadge(i.status)}
+      </div>
+      <div style="display:flex;gap:16px;">
+        <span style="color:#6b7280;font-size:12px;">SEV: <span style="color:${i.sev==='CRITICAL'?'#ef4444':'#f97316'};font-weight:700;">${i.sev}</span></span>
+        <span style="color:#6b7280;font-size:12px;">${i.detections} detections</span>
+        <span style="color:#6b7280;font-size:12px;">${i.time}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDemo(); });
+</script>
+
+<style>
+@keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+@keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
+</style>
+
 </body>
 </html>
