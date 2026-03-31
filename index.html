@@ -658,10 +658,21 @@ document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
           <h2 style="color:#fff;font-size:20px;font-weight:700;margin:0;">Live Detections</h2>
           <p style="color:#6b7280;font-size:13px;margin:4px 0 0;">AI-powered threat detection · real-time analysis</p>
         </div>
-        <button onclick="startLiveDemo()" id="startDemoBtn" style="background:#1d4ed8;color:#fff;border:none;padding:10px 20px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px;">
-          <span id="demoBtnDot" style="width:8px;height:8px;background:#4ade80;border-radius:50%;display:inline-block;"></span>
-          Start Live Demo
-        </button>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div style="display:flex;background:#1f2937;border:1px solid #374151;border-radius:8px;padding:3px;gap:2px;">
+            <button onclick="setDemoMode('supervised')" id="mode-supervised" style="padding:6px 12px;border-radius:6px;border:none;background:#1d4ed8;color:#fff;font-size:12px;font-weight:600;cursor:pointer;">Supervised</button>
+            <button onclick="setDemoMode('autonomous')" id="mode-autonomous" style="padding:6px 12px;border-radius:6px;border:none;background:transparent;color:#6b7280;font-size:12px;font-weight:600;cursor:pointer;">Autonomous</button>
+            <button onclick="setDemoMode('full_autonomous')" id="mode-full" style="padding:6px 12px;border-radius:6px;border:none;background:transparent;color:#6b7280;font-size:12px;font-weight:600;cursor:pointer;">Full Auto</button>
+          </div>
+          <button onclick="startLiveDemo()" id="startDemoBtn" style="background:#1d4ed8;color:#fff;border:none;padding:10px 20px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px;">
+            <span id="demoBtnDot" style="width:8px;height:8px;background:#4ade80;border-radius:50%;display:inline-block;"></span>
+            Start Live Demo
+          </button>
+        </div>
+      </div>
+      <div id="demoModeBar" style="margin-bottom:12px;padding:10px 16px;background:#0f172a;border:1px solid #1e3a5f;border-radius:8px;display:flex;align-items:center;gap:10px;">
+        <span id="demoModeBadge" style="background:#1d4ed8;color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:99px;">SUPERVISED</span>
+        <span id="demoModeDesc" style="color:#6b7280;font-size:12px;">All AI recommendations require analyst approval before execution. You control every action.</span>
       </div>
       <div id="demoDetectionList" style="display:flex;flex-direction:column;gap:8px;min-height:400px;">
         <div style="text-align:center;padding:80px 20px;color:#4b5563;">
@@ -716,7 +727,68 @@ const SOAR_STEPS = [
   { icon:'✅', label:'Threat CONTAINED', detail:'Full audit trail saved · 0 analyst interventions · 6.2s response time', time:6400, color:'#10B981' },
 ];
 
+let demoMode = "supervised";
 let demoRunning = false;
+
+const MODE_CONFIG = {
+  supervised: {
+    label: "SUPERVISED",
+    color: "#1d4ed8",
+    desc: "All AI recommendations require analyst approval before execution. You control every action.",
+    threats: [
+      { id:"d1", type:"RANSOMWARE_EXECUTION", host:"CORP-WS-77", ip:"185.220.101.47", severity:5, confidence:97, score:94, action:"ESCALATE_TO_ANALYST", mitre:["T1486","T1490"], status:"OPEN", time:"just now" },
+      { id:"d2", type:"CREDENTIAL_STUFFING", host:"AUTH-SRV-01", ip:"193.32.162.88", severity:4, confidence:89, score:78, action:"ESCALATE_TO_ANALYST", mitre:["T1110","T1078"], status:"OPEN", time:"2m ago" },
+      { id:"d3", type:"LATERAL_MOVEMENT", host:"CORP-WS-99", ip:"10.0.1.45", severity:4, confidence:82, score:71, action:"ESCALATE_TO_ANALYST", mitre:["T1021","T1550"], status:"OPEN", time:"5m ago" },
+      { id:"d4", type:"DATA_EXFILTRATION", host:"FILE-SRV-03", ip:"45.152.67.21", severity:5, confidence:94, score:91, action:"ESCALATE_TO_ANALYST", mitre:["T1041","T1048"], status:"OPEN", time:"8m ago" },
+      { id:"d5", type:"BRUTE_FORCE", host:"VPN-GW-01", ip:"91.108.56.12", severity:3, confidence:76, score:58, action:"ESCALATE_TO_ANALYST", mitre:["T1110"], status:"OPEN", time:"12m ago" },
+    ]
+  },
+  autonomous: {
+    label: "AUTONOMOUS",
+    color: "#d97706",
+    desc: "Threats above your confidence threshold (75/100) are contained automatically. Below threshold queued for approval.",
+    threats: [
+      { id:"d1", type:"RANSOMWARE_EXECUTION", host:"CORP-WS-77", ip:"185.220.101.47", severity:5, confidence:97, score:94, action:"AUTO_CONTAIN", mitre:["T1486","T1490"], status:"CONTAINED", time:"just now" },
+      { id:"d2", type:"CREDENTIAL_STUFFING", host:"AUTH-SRV-01", ip:"193.32.162.88", severity:4, confidence:89, score:78, action:"ESCALATE_TO_ANALYST", mitre:["T1110","T1078"], status:"OPEN", time:"2m ago" },
+      { id:"d3", type:"LATERAL_MOVEMENT", host:"CORP-WS-99", ip:"10.0.1.45", severity:4, confidence:82, score:71, action:"AUTO_CONTAIN", mitre:["T1021","T1550"], status:"CONTAINED", time:"5m ago" },
+      { id:"d4", type:"DATA_EXFILTRATION", host:"FILE-SRV-03", ip:"45.152.67.21", severity:5, confidence:94, score:91, action:"AUTO_CONTAIN", mitre:["T1041","T1048"], status:"CONTAINED", time:"8m ago" },
+      { id:"d5", type:"BRUTE_FORCE", host:"VPN-GW-01", ip:"91.108.56.12", severity:3, confidence:76, score:58, action:"MONITOR", mitre:["T1110"], status:"OPEN", time:"12m ago" },
+    ]
+  },
+  full_autonomous: {
+    label: "FULL AUTONOMOUS",
+    color: "#7c3aed",
+    desc: "Zero human intervention. Every threat detected, analyzed, and contained by AI. Full audit trail on every action.",
+    threats: [
+      { id:"d1", type:"RANSOMWARE_EXECUTION", host:"CORP-WS-77", ip:"185.220.101.47", severity:5, confidence:97, score:94, action:"AUTO_CONTAIN", mitre:["T1486","T1490"], status:"CONTAINED", time:"just now" },
+      { id:"d2", type:"CREDENTIAL_STUFFING", host:"AUTH-SRV-01", ip:"193.32.162.88", severity:4, confidence:89, score:78, action:"AUTO_CONTAIN", mitre:["T1110","T1078"], status:"CONTAINED", time:"2m ago" },
+      { id:"d3", type:"LATERAL_MOVEMENT", host:"CORP-WS-99", ip:"10.0.1.45", severity:4, confidence:82, score:71, action:"AUTO_CONTAIN", mitre:["T1021","T1550"], status:"CONTAINED", time:"5m ago" },
+      { id:"d4", type:"DATA_EXFILTRATION", host:"FILE-SRV-03", ip:"45.152.67.21", severity:5, confidence:94, score:91, action:"AUTO_CONTAIN", mitre:["T1041","T1048"], status:"CONTAINED", time:"8m ago" },
+      { id:"d5", type:"BRUTE_FORCE", host:"VPN-GW-01", ip:"91.108.56.12", severity:3, confidence:76, score:58, action:"AUTO_CONTAIN", mitre:["T1110"], status:"CONTAINED", time:"12m ago" },
+    ]
+  }
+};
+
+function setDemoMode(mode) {
+  demoMode = mode;
+  const cfg = MODE_CONFIG[mode];
+  // Update buttons
+  ["supervised","autonomous","full_autonomous"].forEach(m => {
+    const btn = document.getElementById("mode-" + m);
+    if (btn) { btn.style.background = m === mode ? cfg.color : "transparent"; btn.style.color = m === mode ? "#fff" : "#6b7280"; }
+  });
+  // Update mode bar
+  document.getElementById("demoModeBadge").textContent = cfg.label;
+  document.getElementById("demoModeBadge").style.background = cfg.color;
+  document.getElementById("demoModeDesc").textContent = cfg.desc;
+  // Reset detections
+  document.getElementById("demoDetectionList").innerHTML = "<div style=\"text-align:center;padding:60px 20px;color:#4b5563;\"><div style=\"font-size:48px;margin-bottom:16px;\">🛡️</div><div style=\"font-size:16px;font-weight:600;color:#6b7280;\">Click Start Live Demo to see " + cfg.label + " mode in action</div></div>";
+  demoRunning = false;
+  const btn = document.getElementById("startDemoBtn");
+  btn.innerHTML = "<span style=\"width:8px;height:8px;background:#4ade80;border-radius:50%;display:inline-block;\"></span> Start Live Demo";
+  btn.style.background = "#1d4ed8";
+}
+
 let demoDetections = [];
 let selectedDetection = null;
 
@@ -787,7 +859,8 @@ function startLiveDemo() {
   list.innerHTML = '';
   demoDetections = [];
 
-  DEMO_THREATS.forEach((threat, i) => {
+  const currentThreats = MODE_CONFIG[demoMode].threats;
+  currentThreats.forEach((threat, i) => {
     setTimeout(() => {
       demoDetections.unshift(threat);
       list.innerHTML = demoDetections.map((d,idx) => renderDetectionCard(d, idx===0)).join('');
@@ -806,7 +879,7 @@ function startLiveDemo() {
     demoRunning = false;
     btn.innerHTML = '<span style="width:8px;height:8px;background:#4ade80;border-radius:50%;display:inline-block;"></span> Replay Demo';
     btn.style.background = '#1d4ed8';
-  }, DEMO_THREATS.length * 1500 + 2500);
+  }, currentThreats.length * 1500 + 2500);
 }
 
 function showDetectionDetail(id) {
