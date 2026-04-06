@@ -25,12 +25,16 @@
   --max:    1140px;
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; overflow-x: hidden; max-width: 100vw; }
 body { background: var(--bg); color: var(--white); font-family: "Inter", sans-serif; font-weight: 300; overflow-x: hidden; line-height: 1.6; }
 
 /* ── UTILITIES ──────────────────────────────────────────────── */
 .container { max-width: var(--max); margin: 0 auto; padding: 0 48px; }
-@media (max-max-width: 768px; width: 100%) {
+@media (max-width: 768px) {
+  /* Overflow prevention */
+  * { box-sizing: border-box; }
+  body { overflow-x: hidden; }
+  img, video, iframe { max-width: 100%; }
   .container { padding: 0 16px; }
   section { padding: 60px 0; }
   
@@ -66,6 +70,63 @@ body { background: var(--bg); color: var(--white); font-family: "Inter", sans-se
   /* Typography scale down */
   .section-title { font-size: clamp(20px, 5vw, 28px); }
   h1 { font-size: clamp(28px, 7vw, 48px) !important; }
+  
+  /* Nav */
+  .nav-cta { display: none; }
+  .nav-links { display: none; }
+  .hamburger { display: flex !important; }
+  
+  /* Hero terminal/demo panel */
+  .hero-terminal, .terminal-window { display: none !important; }
+  .hero { padding: 80px 0 40px; }
+  
+  /* Problem/stats cards */
+  .problem-card { padding: 20px; }
+  .problem-num { font-size: 28px; }
+  
+  /* Network cards */  
+  .network-card { padding: 20px; }
+  
+  /* Explainable AI section */
+  .explainable-grid, .explainable-main-grid { grid-template-columns: 1fr !important; }
+  .explainable-code { display: none; }
+  
+  /* SOAR section */
+  .soar-grid { grid-template-columns: 1fr !important; }
+  .soar-actions-list { display: none; }
+  
+  /* Integrations */
+  .integration-logo { width: 40px !important; height: 40px !important; }
+  
+  /* Pricing */
+  .pricing-card { margin-bottom: 16px; }
+  .pricing-price { font-size: 32px; }
+  
+  /* Demo modal */
+  #demoModal { padding: 0 !important; }
+  #demoModal > div { border-radius: 0 !important; min-height: 100vh; }
+  #tab-detections, #tab-detail, #tab-approvals, #tab-incidents { 
+    padding: 6px 8px !important; font-size: 11px !important; 
+  }
+  
+  /* Footer */
+  .footer-grid { grid-template-columns: 1fr !important; }
+  .footer-links { flex-direction: column; gap: 12px; }
+  .footer-inner { flex-direction: column; align-items: flex-start !important; gap: 16px; padding: 0 16px; }
+
+  /* Stats bar */
+  .stats-inner { grid-template-columns: repeat(2, 1fr) !important; padding: 0 16px; }
+  .stat { border-right: none; border-bottom: 1px solid var(--border); }
+  .stat:nth-child(odd) { border-right: 1px solid var(--border) !important; }
+  .stat:nth-last-child(-n+2) { border-bottom: none; }
+
+  /* Autonomous grid */
+  .auto-grid { grid-template-columns: 1fr !important; gap: 32px; }
+
+  /* Inline-styled grids (via added classes) */
+  .explainable-main-grid { grid-template-columns: 1fr !important; }
+  .explainable-features-grid { grid-template-columns: 1fr !important; }
+  .pricing-addons-grid { grid-template-columns: 1fr !important; }
 }
 
 @media (min-width: 1400px) {
@@ -237,6 +298,15 @@ footer { border-top: 1px solid var(--border); padding: 40px 0; }
 .footer-links a { color: var(--gray); text-decoration: none; font-size: 13px; transition: color 0.2s; }
 .footer-links a:hover { color: var(--white); }
 .footer-copy { font-size: 12px; color: var(--gray); }
+
+/* ── HAMBURGER ───────────────────────────────────────────────── */
+.hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; }
+.hamburger span { width: 22px; height: 2px; background: var(--white); border-radius: 2px; transition: all 0.3s; display: block; }
+
+/* ── MOBILE MENU ─────────────────────────────────────────────── */
+.mobile-menu { display: none; flex-direction: column; padding: 16px; gap: 4px; border-top: 1px solid var(--border); background: var(--bg); }
+.mobile-menu a { color: var(--lgray); text-decoration: none; font-size: 14px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+.mobile-menu a:last-child { border-bottom: none; }
 </style>
 </head>
 <body>
@@ -258,8 +328,27 @@ footer { border-top: 1px solid var(--border); padding: 40px 0; }
       <a href="https://app.domesoc.com" class="btn-ghost">Sign in</a>
       <a href="https://app.domesoc.com/signup" class="btn-primary">Start Free Trial</a>
     </div>
+    <!-- Hamburger -->
+    <button class="hamburger" onclick="toggleMobileMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#how-it-works" onclick="toggleMobileMenu()">How it works</a>
+    <a href="#pricing" onclick="toggleMobileMenu()">Pricing</a>
+    <a href="#integrations" onclick="toggleMobileMenu()">Integrations</a>
+    <a href="/status.html" onclick="toggleMobileMenu()">Status</a>
+    <a href="https://app.domesoc.com" class="btn-ghost" style="text-align:center;">Sign in</a>
+    <a href="https://app.domesoc.com/signup" class="btn-primary" style="text-align:center;display:block;">Start Free Trial</a>
   </div>
 </nav>
+<script>
+function toggleMobileMenu() {
+  const m = document.getElementById("mobileMenu");
+  m.style.display = m.style.display === "flex" ? "none" : "flex";
+}
+</script>
 
 <!-- HERO -->
 <div class="hero">
@@ -433,7 +522,7 @@ footer { border-top: 1px solid var(--border); padding: 40px 0; }
     <div class="eyebrow reveal">Explainable AI</div>
     <h2 class="section-title reveal">The AI shows<br>its work.</h2>
     <p class="section-sub reveal">Every detection gets a full written threat assessment from Claude. Every action has a plain-English reason. You always know exactly why the AI did what it did.</p>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:32px;">
+    <div class="explainable-main-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:32px;">
       <div style="background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:28px;" class="reveal">
         <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--blue);letter-spacing:2px;margin-bottom:16px;">THREAT ASSESSMENT</div>
         <div style="font-size:13px;color:var(--lgray);line-height:1.8;font-family:'JetBrains Mono',monospace;">
@@ -463,7 +552,7 @@ footer { border-top: 1px solid var(--border); padding: 40px 0; }
         </div>
       </div>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+    <div class="explainable-features-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
       <div style="background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:20px;text-align:center;" class="reveal">
         <div style="font-size:24px;margin-bottom:10px;">📝</div>
         <div style="font-size:14px;font-weight:600;margin-bottom:6px;">Written assessments</div>
@@ -631,7 +720,7 @@ footer { border-top: 1px solid var(--border); padding: 40px 0; }
       </div>
     </div>
 
-    <div style="margin-top:32px;padding:20px 28px;border:1px solid var(--border);border-radius:12px;display:grid;grid-template-columns:repeat(3,1fr);gap:24px;text-align:center;" class="reveal">
+    <div class="pricing-addons-grid reveal" style="margin-top:32px;padding:20px 28px;border:1px solid var(--border);border-radius:12px;display:grid;grid-template-columns:repeat(3,1fr);gap:24px;text-align:center;">
       <div>
         <div style="font-size:13px;font-weight:600;color:var(--white);margin-bottom:4px;">No per-seat pricing</div>
         <div style="font-size:12px;color:var(--gray);">Add your whole team. One flat monthly rate regardless of headcount.</div>
