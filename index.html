@@ -315,7 +315,7 @@ footer { border-top: 1px solid var(--border); padding: 40px 0; }
 <nav>
   <div class="nav-inner">
     <a href="/" class="nav-logo">
-      <div class="nav-logo-icon">🛡️</div>
+      <div class="nav-logo-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L4 6v6c0 5.25 3.5 10.15 8 11.35C16.5 22.15 20 17.25 20 12V6l-8-4z" fill="rgba(255,255,255,0.9)"/></svg></div>
       <div class="nav-logo-text">Dome<span>SOC</span></div>
     </a>
     <div class="nav-links">
@@ -357,7 +357,7 @@ function toggleMobileMenu() {
   <p class="hero-sub">DomeSOC detects threats, makes decisions, and executes containment — autonomously or with analyst approval, depending on your chosen mode. Not another dashboard. An AI-powered SOC that works at machine speed, 24/7.</p>
   <div class="hero-cta">
     <a href="https://app.domesoc.com/signup" class="btn-hero">Start 14-Day Free Trial →</a>
-    <button onclick="openDemo()" class="btn-hero-outline"><span class="pulse"></span> See Live Demo</button>
+    <a href="https://app.domesoc.com" class="btn-hero-outline"><span class="pulse"></span> Open App</a>
     <a href="#how-it-works" class="btn-hero-ghost">How it works ↓</a>
   </div>
   <div class="terminal-wrap">
@@ -372,7 +372,7 @@ function toggleMobileMenu() {
         <div class="t-line"><span class="t-time">04:17:33</span><span class="t-tag t-ai">ADVISOR</span><span class="t-msg">Threat assessment: Nation-state TTPs, lateral movement risk HIGH — recommending immediate containment</span></div>
         <div class="t-line"><span class="t-time">04:17:33</span><span class="t-tag t-soar">SOAR</span><span class="t-msg">Executing: block_ip(185.220.101.47) → isolate_host(CORP-WS-04) → disable_account(jsmith) → create_jira_ticket(SOC-2847)</span></div>
         <div class="t-line"><span class="t-time">04:17:34</span><span class="t-tag t-soar">SOAR</span><span class="t-msg">✓ IP blocked at perimeter · ✓ Host isolated · ✓ Account suspended · ✓ Ticket SOC-2847 created</span></div>
-        <div class="t-line"><span class="t-time">04:17:34</span><span class="t-tag t-learn">LEARN</span><span class="t-msg">Pattern logged — model weights updated — brute force detection threshold refined for tenant</span></div>
+        <div class="t-line"><span class="t-time">04:17:34</span><span class="t-tag t-learn">LEARN</span><span class="t-msg">Pattern logged — feedback loop updated — brute force detection threshold refined for tenant</span></div>
         <div class="t-line"><span class="t-time">04:17:35</span><span class="t-tag t-ai">SYSTEM</span><span class="t-msg">Threat contained — 0 analyst interventions required — full audit trail saved — <span class="t-score">decision reasoning logged</span> <span class="cursor"></span></span></div>
       </div>
     </div>
@@ -383,8 +383,8 @@ function toggleMobileMenu() {
 <div class="stats-bar">
   <div class="stats-inner">
     <div class="stat"><div class="stat-num" style="color:var(--green)">26</div><div class="stat-label">SOAR actions</div><div class="stat-sub">Auto-execute or require approval</div></div>
-    <div class="stat"><div class="stat-num" style="color:var(--cyan)">12</div><div class="stat-label">Native integrations</div><div class="stat-sub">CrowdStrike, Okta, Jira &amp; more</div></div>
-    <div class="stat"><div class="stat-num" style="color:var(--blue)">3</div><div class="stat-label">AI networks</div><div class="stat-sub">Running in parallel on every detection</div></div>
+    <div class="stat"><div class="stat-num" style="color:var(--cyan)">19</div><div class="stat-label">Native integrations</div><div class="stat-sub">CrowdStrike, Okta, Jira &amp; more</div></div>
+    <div class="stat"><div class="stat-num" style="color:var(--blue)">5</div><div class="stat-label">AI networks</div><div class="stat-sub">Running in parallel on every detection</div></div>
     <div class="stat"><div class="stat-num" style="color:var(--white)">100%</div><div class="stat-label">Decisions explained</div><div class="stat-sub">Plain-English reasoning on every action</div></div>
   </div>
 </div>
@@ -416,13 +416,13 @@ function toggleMobileMenu() {
 <section id="how-it-works">
   <div class="container">
     <div class="eyebrow reveal">How it works</div>
-    <h2 class="section-title reveal">Three AI networks.<br>One autonomous brain.</h2>
-    <p class="section-sub reveal">DomeSOC is built from first principles — not retrofitted from a legacy SIEM. Three specialized networks work in parallel on every detection, every second.</p>
+    <h2 class="section-title reveal">Five AI networks.<br>One autonomous brain.</h2>
+    <p class="section-sub reveal">DomeSOC is built from first principles — not retrofitted from a legacy SIEM. Five specialized networks work in parallel on every detection, every second.</p>
     <div class="networks-grid">
       <div class="network-card reveal">
         <span class="network-icon">🔮</span>
         <div class="network-name">Predictive Network</div>
-        <div class="network-desc">Behavioral baselining and anomaly pre-scoring. Catches deviations before they become incidents. Learns your environment over time.</div>
+        <div class="network-desc">Behavioral analysis and anomaly pre-scoring. Catches deviations before they become incidents. Learns your environment over time.</div>
         <span class="tag tag-blue">PREVENTION LAYER</span>
       </div>
       <div class="network-card reveal" style="transition-delay:0.1s">
@@ -437,9 +437,21 @@ function toggleMobileMenu() {
         <div class="network-desc">Powered by Anthropic Claude. Writes a full threat assessment for every detection. Executes SOAR playbooks autonomously. Full audit trail on every action.</div>
         <span class="tag tag-green">RESPONSE LAYER</span>
       </div>
+      <div class="network-card reveal" style="transition-delay:0.3s">
+        <span class="network-icon">🗂️</span>
+        <div class="network-name">Brain Memory Network</div>
+        <div class="network-desc">Persistent cross-detection memory and threat pattern correlation. Stores entity context across sessions — connecting dots between detections to reveal advanced persistent threats.</div>
+        <span class="tag tag-blue">MEMORY LAYER</span>
+      </div>
+      <div class="network-card reveal" style="transition-delay:0.4s">
+        <span class="network-icon">🤖</span>
+        <div class="network-name">Multi-Agent System</div>
+        <div class="network-desc">Four specialized AI agents — Triage, Forensics, Intel, and Response — working in parallel on every detection to provide comprehensive multi-angle analysis.</div>
+        <span class="tag tag-cyan">ANALYSIS LAYER</span>
+      </div>
     </div>
     <div style="padding:14px 20px;background:rgba(59,130,246,0.05);border:1px solid rgba(59,130,246,0.12);border-radius:8px;font-size:12px;color:var(--lgray);font-family:'JetBrains Mono',monospace;" class="reveal">
-      <span style="color:var(--blue)">→</span> All three networks run in parallel on every detection &nbsp;·&nbsp; Results merged by the AI brain &nbsp;·&nbsp; Decision logged with full confidence score
+      <span style="color:var(--blue)">→</span> All five networks run in parallel on every detection &nbsp;·&nbsp; Results merged by the AI brain &nbsp;·&nbsp; Decision logged with full confidence score
     </div>
   </div>
 </section>
@@ -463,7 +475,7 @@ function toggleMobileMenu() {
           <div class="auto-icon" style="background:rgba(245,158,11,0.1)">⚡</div>
           <div>
             <h4>Autonomous Mode</h4>
-            <p>AI acts autonomously below your confidence threshold. High-confidence threats contained immediately.</p>
+            <p>AI acts autonomously above your confidence threshold. High-confidence threats contained immediately.</p>
           </div>
         </div>
         <div class="auto-feature reveal" style="transition-delay:0.2s">
@@ -508,7 +520,7 @@ function toggleMobileMenu() {
         <div class="pipe-arrow">↓</div>
         <div class="pipe-step" style="border-color:rgba(245,158,11,0.3)">
           <div class="pipe-num" style="background:rgba(245,158,11,0.15);color:#f59e0b">5</div>
-          <div><div class="pipe-label">Model learns</div><div class="pipe-sub">Outcome recorded — weights updated — threshold refined</div></div>
+          <div><div class="pipe-label">Model learns</div><div class="pipe-sub">Outcome recorded — feedback loop updated — threshold refined</div></div>
           <div class="pipe-badge" style="color:#f59e0b">LEARN</div>
         </div>
       </div>
@@ -600,7 +612,7 @@ function toggleMobileMenu() {
       <div class="soar-card reveal" style="transition-delay:0.15s">
         <div class="soar-card-title">☁️ Cloud</div>
         <div class="soar-tags">
-          <span class="soar-tag">Revoke IAM Keys</span><span class="soar-tag">Suspend Instance</span><span class="soar-tag">Block S3 Access</span>
+          <span class="soar-tag">Revoke IAM Keys</span><span class="soar-tag">Suspend Instance</span><span class="soar-tag">Restrict S3 Access</span>
         </div>
       </div>
       <div class="soar-card reveal" style="transition-delay:0.2s">
@@ -612,7 +624,7 @@ function toggleMobileMenu() {
       <div class="soar-card reveal" style="transition-delay:0.25s">
         <div class="soar-card-title">🔔 Notification</div>
         <div class="soar-tags">
-          <span class="soar-tag">Email Alert</span><span class="soar-tag">Slack Alert</span><span class="soar-tag">Webhook</span><span class="soar-tag">SMS</span>
+          <span class="soar-tag">Email Alert</span><span class="soar-tag">Slack Alert</span><span class="soar-tag">Webhook</span>
         </div>
       </div>
     </div>
@@ -622,7 +634,7 @@ function toggleMobileMenu() {
 <!-- INTEGRATIONS -->
 <section id="integrations">
   <div class="container">
-    <div class="eyebrow reveal">12 native integrations</div>
+    <div class="eyebrow reveal">19 native integrations</div>
     <h2 class="section-title reveal">Plugs into your<br>existing stack.</h2>
     <p class="section-sub reveal">Native API integrations with the tools your team already uses. No middleware, no connectors, no professional services.</p>
     <div class="integrations-grid">
@@ -638,6 +650,12 @@ function toggleMobileMenu() {
       <div class="int-card reveal" style="transition-delay:0.45s"><div class="int-icon">🏰</div><div><div class="int-name">Fortinet</div><div class="int-type">Firewall</div></div></div>
       <div class="int-card reveal" style="transition-delay:0.5s"><div class="int-icon">☁️</div><div><div class="int-name">AWS</div><div class="int-type">Cloud</div></div></div>
       <div class="int-card reveal" style="transition-delay:0.55s"><div class="int-icon">🌐</div><div><div class="int-name">GCP</div><div class="int-type">Cloud</div></div></div>
+      <div class="int-card reveal" style="transition-delay:0.6s"><div class="int-icon">💬</div><div><div class="int-name">Slack</div><div class="int-type">Collaboration</div></div></div>
+      <div class="int-card reveal" style="transition-delay:0.65s"><div class="int-icon">🟦</div><div><div class="int-name">Microsoft Teams</div><div class="int-type">Collaboration</div></div></div>
+      <div class="int-card reveal" style="transition-delay:0.7s"><div class="int-icon">🦠</div><div><div class="int-name">VirusTotal</div><div class="int-type">Threat Intel</div></div></div>
+      <div class="int-card reveal" style="transition-delay:0.75s"><div class="int-icon">🔭</div><div><div class="int-name">Splunk</div><div class="int-type">SIEM</div></div></div>
+      <div class="int-card reveal" style="transition-delay:0.8s"><div class="int-icon">🪟</div><div><div class="int-name">Microsoft Sentinel</div><div class="int-type">SIEM</div></div></div>
+      <div class="int-card reveal" style="transition-delay:0.85s"><div class="int-icon">🔍</div><div><div class="int-name">Elastic SIEM</div><div class="int-type">SIEM</div></div></div>
     </div>
   </div>
 </section>
@@ -689,7 +707,7 @@ function toggleMobileMenu() {
           <div class="pricing-feature">Everything in Supervised</div>
           <div class="pricing-feature">Autonomous containment — no analyst needed</div>
           <div class="pricing-feature">Per-action permissions — granular control</div>
-          <div class="pricing-feature">15+ native integrations — CrowdStrike, Okta, Jira &amp; more</div>
+          <div class="pricing-feature">19 native integrations — CrowdStrike, Okta, Jira &amp; more</div>
           <div class="pricing-feature">VirusTotal IP enrichment on every detection</div>
           <div class="pricing-feature">Detection tuning — whitelist &amp; suppress rules</div>
           <div class="pricing-feature">SLA tracking &amp; compliance dashboard</div>
@@ -702,7 +720,7 @@ function toggleMobileMenu() {
         <div class="pricing-name">Full Autonomous</div>
         <div class="pricing-desc">Zero human intervention. The AI handles everything — detection, decision, containment.</div>
         <div class="pricing-price">$15,000<span>/mo</span></div>
-        <div class="pricing-period">Unlimited seats · All features unlocked</div>
+        <div class="pricing-period">Unlimited users · All features unlocked</div>
         <div style="background:rgba(255,255,255,0.03);border-radius:8px;padding:14px;margin:16px 0;font-size:12px;color:var(--gray);line-height:1.6;">
           Best for mature security teams running 24/7 operations without analyst on-call. Requires legal acknowledgment before activation.
         </div>
@@ -744,7 +762,7 @@ function toggleMobileMenu() {
   <p class="reveal">Be among the first teams to run a fully autonomous security operation with DomeSOC. No per-seat pricing. No professional services. Just AI that works.</p>
   <div class="hero-cta reveal">
     <a href="https://app.domesoc.com/signup" class="btn-hero">Start 14-Day Free Trial →</a>
-    <button onclick="openDemo()" class="btn-hero-outline"><span class="pulse"></span> See Live Demo</button>
+    <a href="https://app.domesoc.com" class="btn-hero-outline"><span class="pulse"></span> Open App</a>
   </div>
 </div>
 
@@ -758,7 +776,7 @@ function toggleMobileMenu() {
       <a href="https://app.domesoc.com/docs">Docs</a>
       <a href="mailto:hello@domesoc.com">Contact</a>
     </div>
-    <div class="footer-copy">© 2026 DomeSOC · <a href="/terms.html" style="color:#64748B;text-decoration:none;">Terms</a> · <a href="/privacy.html" style="color:#64748B;text-decoration:none;">Privacy</a></div>
+    <div class="footer-copy">© 2026 DomeSOC · Patent Pending — US 64/031,411 · <a href="/terms.html" style="color:#64748B;text-decoration:none;">Terms</a> · <a href="/privacy.html" style="color:#64748B;text-decoration:none;">Privacy</a></div>
   </div>
 </footer>
 
