@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- Dark navy background -->
+  <rect width="32" height="32" rx="7" fill="#0f172a"/>
+  <!-- Shield: blue-to-cyan gradient fill -->
+  <defs>
+    <linearGradient id="sg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </linearGradient>
+  </defs>
+  <!-- Shield path centered, scaled to 32x32 -->
+  <path d="M16 4 L6 8.5 L6 16 C6 21.8 10.5 27.1 16 28.5 C21.5 27.1 26 21.8 26 16 L26 8.5 Z" fill="url(#sg)"/>
+  <!-- Inner highlight line -->
+  <path d="M16 7 L9 10.5 L9 16 C9 20.2 12.2 24.1 16 25.3 C19.8 24.1 23 20.2 23 16 L23 10.5 Z" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="0.8"/>
+</svg>
