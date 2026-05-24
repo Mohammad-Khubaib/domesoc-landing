@@ -503,13 +503,13 @@ function toggleMobileMenu() {
         <div style="font-size:32px;">🛡️</div>
         <div style="flex:1;min-width:260px;">
           <div style="font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--blue);letter-spacing:2px;margin-bottom:8px;">ADVERSARIAL VALIDATION LAYER</div>
-          <div style="font-size:18px;font-weight:600;color:var(--white);margin-bottom:10px;">Every autonomous decision pressure-tested by a second AI.</div>
+          <div style="font-size:18px;font-weight:600;color:var(--white);margin-bottom:10px;">Every autonomous decision adversarially reviewed by a second AI.</div>
           <div style="font-size:14px;color:var(--lgray);line-height:1.7;">Every high-severity or autonomous-mode decision is reviewed by a second AI — the Validator Agent — before execution. The Validator runs seven independent checks against the advisor's reasoning: OT safety, compliance requirements, evidence consistency, action appropriateness, historical entity behavior, investigation conflicts, and confidence justification. If any check fails, execution is blocked and the case escalates to human review with the Validator's reasoning attached.</div>
         </div>
       </div>
     </div>
     <div style="padding:14px 20px;margin-top:20px;background:rgba(34,197,94,0.05);border:1px solid rgba(34,197,94,0.15);border-radius:8px;font-size:12px;color:var(--lgray);font-family:'JetBrains Mono',monospace;" class="reveal">
-      <span style="color:var(--green)">→</span> Three safety mechanisms verified in production &nbsp;·&nbsp; One independent review layer running on every action that matters &nbsp;·&nbsp; The AI is fast. The architecture decides when fast isn't safe.
+      <span style="color:var(--green)">→</span> One independent review layer running on every action that matters &nbsp;·&nbsp; The AI is fast. The architecture decides when fast isn't safe.
     </div>
   </div>
 </section>
@@ -519,7 +519,7 @@ function toggleMobileMenu() {
   <div class="container">
     <div class="eyebrow reveal">How it works</div>
     <h2 class="section-title reveal">The architecture.</h2>
-    <p class="section-sub reveal">Three networks reason about every detection. A separate validation layer pressure-tests every autonomous decision. Every step is logged with confidence scores and plain-English reasoning.</p>
+    <p class="section-sub reveal">Three networks reason about every detection. A separate validation layer adversarially reviews every autonomous decision. Every step is logged with confidence scores and plain-English reasoning.</p>
     <div class="networks-grid">
       <div class="network-card reveal">
         <span class="network-icon">🔮</span>
@@ -540,17 +540,7 @@ function toggleMobileMenu() {
         <span class="tag tag-green">DECISION LAYER</span>
       </div>
     </div>
-    <div style="margin-top:24px;background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:28px;" class="reveal">
-      <div style="display:flex;align-items:flex-start;gap:18px;flex-wrap:wrap;">
-        <div style="font-size:32px;">🛡️</div>
-        <div style="flex:1;min-width:260px;">
-          <div style="font-size:11px;font-family:'JetBrains Mono',monospace;color:#8b5cf6;letter-spacing:2px;margin-bottom:8px;">VALIDATION LAYER</div>
-          <div style="font-size:18px;font-weight:600;color:var(--white);margin-bottom:10px;">Adversarial review on every autonomous decision.</div>
-          <div style="font-size:14px;color:var(--lgray);line-height:1.7;">Adversarial review of every high-severity or autonomous-mode decision before execution. Independent reasoning from the advisor. Seven checks against the proposed action. Blocks unsafe decisions. Escalates to human review with full reasoning attached.</div>
-        </div>
-      </div>
-    </div>
-    <div style="padding:14px 20px;margin-top:20px;background:rgba(59,130,246,0.05);border:1px solid rgba(59,130,246,0.12);border-radius:8px;font-size:12px;color:var(--lgray);font-family:'JetBrains Mono',monospace;" class="reveal">
+    <div style="padding:14px 20px;background:rgba(59,130,246,0.05);border:1px solid rgba(59,130,246,0.12);border-radius:8px;font-size:12px;color:var(--lgray);font-family:'JetBrains Mono',monospace;" class="reveal">
       <span style="color:var(--blue)">→</span> Three networks in parallel &nbsp;·&nbsp; One advisor synthesizing &nbsp;·&nbsp; One validator checking &nbsp;·&nbsp; Every decision auditable
     </div>
   </div>
