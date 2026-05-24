@@ -323,7 +323,7 @@ footer { border-top: 1px solid var(--border); padding: 40px 0; }
       <div class="nav-logo-text">Dome<span>SOC</span></div>
     </a>
     <div class="nav-links">
-      <a href="#how-it-works">How it works</a>
+      <a href="#architecture">How it works</a>
       <a href="#pricing">Pricing</a>
       <a href="#integrations">Integrations</a>
       <a href="/status.html">Status</a>
@@ -339,7 +339,7 @@ footer { border-top: 1px solid var(--border); padding: 40px 0; }
   </div>
   <!-- Mobile Menu -->
   <div class="mobile-menu" id="mobileMenu">
-    <a href="#how-it-works" onclick="toggleMobileMenu()">How it works</a>
+    <a href="#architecture" onclick="toggleMobileMenu()">How it works</a>
     <a href="#pricing" onclick="toggleMobileMenu()">Pricing</a>
     <a href="#integrations" onclick="toggleMobileMenu()">Integrations</a>
     <a href="/status.html" onclick="toggleMobileMenu()">Status</a>
@@ -356,13 +356,13 @@ function toggleMobileMenu() {
 
 <!-- HERO -->
 <div class="hero">
-  <div class="hero-badge"><div class="pulse"></div> AUTONOMOUS SOC — POWERED BY CLAUDE AI</div>
-  <h1>Your SOC.<br><span class="grad">Fully Autonomous.</span></h1>
-  <p class="hero-sub">DomeSOC detects threats, makes decisions, and executes containment — autonomously or with analyst approval, depending on your chosen mode. Not another dashboard. An AI-powered SOC that works at machine speed, 24/7.</p>
+  <div class="hero-badge"><div class="pulse"></div> AUTONOMOUS SOC · POWERED BY ANTHROPIC CLAUDE</div>
+  <h1>Your SOC. Fully autonomous.<br><span class="grad">Safety mechanisms you can verify.</span></h1>
+  <p class="hero-sub">Calibrated to your environment. Compounding accuracy with every detection. DomeSOC detects threats, makes decisions, and contains them — supervised, autonomous, or fully autonomous. Built on a 10-source context architecture that learns your environment over time. Adversarial validation layer blocks unsafe decisions before they execute.</p>
   <div class="hero-cta">
     <a href="https://app.domesoc.com/signup" class="btn-hero">Start 14-Day Free Trial →</a>
     <button onclick="openDemo()" class="btn-hero-outline"><span class="pulse"></span> See Live Demo</button>
-    <a href="https://app.domesoc.com" class="btn-hero-ghost">Open App →</a>
+    <a href="#architecture" class="btn-hero-ghost">See the architecture ↓</a>
   </div>
   <div class="terminal-wrap">
     <div class="terminal">
@@ -409,8 +409,8 @@ function toggleMobileMenu() {
 <div class="stats-bar">
   <div class="stats-inner">
     <div class="stat"><div class="stat-num" style="color:var(--green)">26</div><div class="stat-label">SOAR actions</div><div class="stat-sub">Auto-execute or require approval</div></div>
-    <div class="stat"><div class="stat-num" style="color:var(--cyan)">19</div><div class="stat-label">Native integrations</div><div class="stat-sub">CrowdStrike, Okta, Jira &amp; more</div></div>
-    <div class="stat"><div class="stat-num" style="color:var(--blue)">5</div><div class="stat-label">AI networks</div><div class="stat-sub">Running in parallel on every detection</div></div>
+    <div class="stat"><div class="stat-num" style="color:var(--cyan)">40</div><div class="stat-label">Total integrations</div><div class="stat-sub">19 wired today + 21 connectors ready</div></div>
+    <div class="stat"><div class="stat-num" style="color:var(--blue)">3</div><div class="stat-label">AI networks + validator</div><div class="stat-sub">Predictive · Detective · Advisor · Validator</div></div>
     <div class="stat"><div class="stat-num" style="color:var(--white)">100%</div><div class="stat-label">Decisions explained</div><div class="stat-sub">Plain-English reasoning on every action</div></div>
   </div>
 </div>
@@ -419,65 +419,139 @@ function toggleMobileMenu() {
 <section id="problem">
   <div class="container">
     <div class="eyebrow reveal">The problem</div>
-    <h2 class="section-title reveal">Your SOC is drowning.<br>Attackers know it.</h2>
-    <p class="section-sub reveal">The threat landscape moves at machine speed. Human analysts can't keep up. DomeSOC does.</p>
+    <h2 class="section-title reveal">Your SOC is drowning.<br>Autonomous AI tools make it worse.</h2>
+    <p class="section-sub reveal">Most autonomous-SOC platforms layer AI on top of existing alert pipelines. You get speed. You also get a black box you can't audit, calibration that never reaches your environment, and no answer to the question every CISO asks: when does the AI refuse to act?</p>
     <div class="problem-grid">
       <div class="problem-card reveal">
-        <div class="problem-num">10,000+ threats</div>
-        <div class="problem-label">Security alerts per day in a mid-market SOC (Enterprise Strategy Group, 2023). Analysts miss real threats buried in noise.</div>
+        <div class="problem-num">10,000+ alerts/day</div>
+        <div class="problem-label">Mid-market SOC volume (Enterprise Strategy Group, 2023). Most autonomous tools just process more, faster — without understanding YOUR environment.</div>
       </div>
       <div class="problem-card reveal" style="transition-delay:0.1s">
-        <div class="problem-num">45 days</div>
-        <div class="problem-label">Average time to detect a breach (IBM, 2024). Attackers have weeks to move laterally before anyone notices.</div>
+        <div class="problem-num">45-day detection</div>
+        <div class="problem-label">IBM Cost of a Data Breach, 2024. Generic AI on alerts doesn't shorten this because it doesn't know what's normal for you.</div>
       </div>
       <div class="problem-card reveal" style="transition-delay:0.2s">
-        <div class="problem-num">$4.8M</div>
-        <div class="problem-label">Average cost of a data breach (IBM Cost of a Data Breach Report, 2024). Most of it preventable with faster detection and containment.</div>
+        <div class="problem-num">$4.8M breach</div>
+        <div class="problem-label">IBM, 2024. Most of it preventable with faster detection AND verified containment — not just faster detection.</div>
       </div>
+    </div>
+    <p class="section-sub reveal" style="margin-top:32px;margin-bottom:0;max-width:none;text-align:center;font-size:15px;color:var(--white);">DomeSOC was built to answer the harder question: <em style="color:var(--blue);font-style:normal;">Can autonomous AI be both fast AND safe?</em></p>
+  </div>
+</section>
+
+<!-- CALIBRATION MOAT -->
+<section id="calibration">
+  <div class="container">
+    <div class="eyebrow reveal">The moat</div>
+    <h2 class="section-title reveal">Generic AI vs<br><span class="grad">calibrated AI.</span></h2>
+    <p class="section-sub reveal">Month one, DomeSOC behaves like every other autonomous SOC platform — generic threat models, baseline calibration, broad confidence thresholds. By month six, it's measurably more accurate at YOUR environment than at month one. Every detection sharpens it.</p>
+    <p class="section-sub reveal" style="margin-top:-24px;">This is the difference between threat intelligence (static, global, identical for every customer) and calibration (dynamic, per-tenant, yours alone). Threat intelligence tells you what attackers do generally. Calibration tells you what's normal for YOU specifically — so the AI knows when something isn't.</p>
+    <div class="networks-grid">
+      <div class="network-card reveal">
+        <span class="network-icon">🔁</span>
+        <div class="network-name">Closed predictive calibration loop</div>
+        <div class="network-desc">Every advisor decision is scored against the actual outcome — confirmed threat, false positive, or expired prediction. Calibration data accumulates per-tenant. The longer you're on the platform, the more accurately the AI predicts your environment specifically.</div>
+        <span class="tag tag-blue">COMPOUNDS OVER TIME</span>
+      </div>
+      <div class="network-card reveal" style="transition-delay:0.1s">
+        <span class="network-icon">🧩</span>
+        <div class="network-name">10-source context substrate</div>
+        <div class="network-desc">Asset registry. Brain memory of every entity DomeSOC has seen. Business context. Network topology. Identity context. Threat intelligence feeds. Compliance configuration. Recent detection patterns. Investigation timeline. Per-tenant calibration data. Every advisor decision reasons across all ten — not just the alert.</div>
+        <span class="tag tag-cyan">10 SOURCES PER DECISION</span>
+      </div>
+      <div class="network-card reveal" style="transition-delay:0.2s">
+        <span class="network-icon">🔒</span>
+        <div class="network-name">Stays with you, not with us</div>
+        <div class="network-desc">Your calibration data belongs to your tenant. It's not pooled, not shared across customers, not used to train cross-tenant models. Your environment shapes your AI. Your AI doesn't shape someone else's.</div>
+        <span class="tag tag-green">PER-TENANT ISOLATION</span>
+      </div>
+    </div>
+    <div style="padding:14px 20px;background:rgba(59,130,246,0.05);border:1px solid rgba(59,130,246,0.12);border-radius:8px;font-size:12px;color:var(--lgray);font-family:'JetBrains Mono',monospace;" class="reveal">
+      <span style="color:var(--blue)">→</span> This is what most autonomous-SOC vendors don't have &nbsp;·&nbsp; Threat intelligence gets stale &nbsp;·&nbsp; Calibration compounds
     </div>
   </div>
 </section>
 
-<!-- HOW IT WORKS -->
-<section id="how-it-works">
+<!-- VERIFIED SAFETY -->
+<section id="safety">
+  <div class="container">
+    <div class="eyebrow reveal">Verified in production</div>
+    <h2 class="section-title reveal">Three safety mechanisms.<br><span class="grad">Verified, not described.</span></h2>
+    <p class="section-sub reveal">Most autonomous-SOC vendors describe their safety controls. We verified ours via controlled testing against the production system. When the AI should refuse to act, we know — because we proved it would.</p>
+    <div class="networks-grid">
+      <div class="network-card reveal">
+        <span class="network-icon">❓</span>
+        <div class="network-name">Unknown-entity escalation</div>
+        <div class="network-desc">The system refuses autonomous action on hosts it has no history for. New endpoint joins your network and gets compromised before DomeSOC has context? Routes to analyst. Doesn't quarantine on assumptions. Doesn't disable accounts it doesn't recognize. Cold-start protection by design.</div>
+        <span class="tag tag-blue">VERIFIED</span>
+      </div>
+      <div class="network-card reveal" style="transition-delay:0.1s">
+        <span class="network-icon">⚖️</span>
+        <div class="network-name">Advisor judgment override</div>
+        <div class="network-desc">Even in Autonomous mode, medium-confidence decisions route to analyst review. The advisor is calibrated to know what it doesn't know. High-confidence threats get contained automatically. Borderline cases get a human. You set the threshold; the AI respects it without exception.</div>
+        <span class="tag tag-cyan">VERIFIED</span>
+      </div>
+      <div class="network-card reveal" style="transition-delay:0.2s">
+        <span class="network-icon">🧪</span>
+        <div class="network-name">Pressure-tested decision boundaries</div>
+        <div class="network-desc">Tested against synthetic favorable conditions — seeded threat signals, known-bad IPs, kill-chain patterns, historical attack indicators. The advisor would not push past medium confidence even with all signals aligned. Calibrated skepticism is a property, not a setting.</div>
+        <span class="tag tag-green">VERIFIED</span>
+      </div>
+    </div>
+    <div style="margin-top:24px;background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:28px;" class="reveal">
+      <div style="display:flex;align-items:flex-start;gap:18px;flex-wrap:wrap;">
+        <div style="font-size:32px;">🛡️</div>
+        <div style="flex:1;min-width:260px;">
+          <div style="font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--blue);letter-spacing:2px;margin-bottom:8px;">ADVERSARIAL VALIDATION LAYER</div>
+          <div style="font-size:18px;font-weight:600;color:var(--white);margin-bottom:10px;">Every autonomous decision pressure-tested by a second AI.</div>
+          <div style="font-size:14px;color:var(--lgray);line-height:1.7;">Every high-severity or autonomous-mode decision is reviewed by a second AI — the Validator Agent — before execution. The Validator runs seven independent checks against the advisor's reasoning: OT safety, compliance requirements, evidence consistency, action appropriateness, historical entity behavior, investigation conflicts, and confidence justification. If any check fails, execution is blocked and the case escalates to human review with the Validator's reasoning attached.</div>
+        </div>
+      </div>
+    </div>
+    <div style="padding:14px 20px;margin-top:20px;background:rgba(34,197,94,0.05);border:1px solid rgba(34,197,94,0.15);border-radius:8px;font-size:12px;color:var(--lgray);font-family:'JetBrains Mono',monospace;" class="reveal">
+      <span style="color:var(--green)">→</span> Three safety mechanisms verified in production &nbsp;·&nbsp; One independent review layer running on every action that matters &nbsp;·&nbsp; The AI is fast. The architecture decides when fast isn't safe.
+    </div>
+  </div>
+</section>
+
+<!-- ARCHITECTURE -->
+<section id="architecture">
   <div class="container">
     <div class="eyebrow reveal">How it works</div>
-    <h2 class="section-title reveal">Five AI networks.<br>One autonomous brain.</h2>
-    <p class="section-sub reveal">DomeSOC is built from first principles — not retrofitted from a legacy SIEM. Five specialized networks work in parallel on every detection, every second.</p>
+    <h2 class="section-title reveal">The architecture.</h2>
+    <p class="section-sub reveal">Three networks reason about every detection. A separate validation layer pressure-tests every autonomous decision. Every step is logged with confidence scores and plain-English reasoning.</p>
     <div class="networks-grid">
       <div class="network-card reveal">
         <span class="network-icon">🔮</span>
         <div class="network-name">Predictive Network</div>
-        <div class="network-desc">Behavioral analysis and anomaly pre-scoring. Catches deviations before they become incidents. Learns your environment over time.</div>
+        <div class="network-desc">Behavioral baselines learned per-tenant. Anomaly pre-scoring against your environment specifically. Catches deviations before they become alerts. Calibration accumulates over months of observation — your baseline isn't a generic baseline.</div>
         <span class="tag tag-blue">PREVENTION LAYER</span>
       </div>
       <div class="network-card reveal" style="transition-delay:0.1s">
         <span class="network-icon">🔍</span>
         <div class="network-name">Detective Network</div>
-        <div class="network-desc">Real-time MITRE ATT&amp;CK mapping and confidence scoring. Collapses thousands of noisy alerts into a handful of prioritized threat decisions.</div>
+        <div class="network-desc">Real-time MITRE ATT&amp;CK technique mapping. Confidence scoring against the 10-source context substrate. Collapses thousands of noisy alerts into a handful of prioritized decisions with structured evidence.</div>
         <span class="tag tag-cyan">DETECTION LAYER</span>
       </div>
       <div class="network-card reveal" style="transition-delay:0.2s">
         <span class="network-icon">🧠</span>
         <div class="network-name">Advisor Network</div>
-        <div class="network-desc">Powered by Anthropic Claude. Writes a full threat assessment for every detection. Executes SOAR playbooks autonomously. Full audit trail on every action.</div>
-        <span class="tag tag-green">RESPONSE LAYER</span>
-      </div>
-      <div class="network-card reveal" style="transition-delay:0.3s">
-        <span class="network-icon">🗂️</span>
-        <div class="network-name">Brain Memory Network</div>
-        <div class="network-desc">Persistent cross-detection memory and threat pattern correlation. Stores entity context across sessions — connecting dots between detections to reveal advanced persistent threats.</div>
-        <span class="tag tag-blue">MEMORY LAYER</span>
-      </div>
-      <div class="network-card reveal" style="transition-delay:0.4s">
-        <span class="network-icon">🤖</span>
-        <div class="network-name">Multi-Agent System</div>
-        <div class="network-desc">Four specialized AI agents — Triage, Forensics, Intel, and Response — working in parallel on every detection to provide comprehensive multi-angle analysis.</div>
-        <span class="tag tag-cyan">ANALYSIS LAYER</span>
+        <div class="network-desc">Claude-powered written threat assessment on every detection. Reasons across all 10 context sources — asset criticality, entity history, network topology, identity context, compliance requirements. Selects action with explicit justification. Logged to immutable audit trail.</div>
+        <span class="tag tag-green">DECISION LAYER</span>
       </div>
     </div>
-    <div style="padding:14px 20px;background:rgba(59,130,246,0.05);border:1px solid rgba(59,130,246,0.12);border-radius:8px;font-size:12px;color:var(--lgray);font-family:'JetBrains Mono',monospace;" class="reveal">
-      <span style="color:var(--blue)">→</span> All five networks run in parallel on every detection &nbsp;·&nbsp; Results merged by the AI brain &nbsp;·&nbsp; Decision logged with full confidence score
+    <div style="margin-top:24px;background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:28px;" class="reveal">
+      <div style="display:flex;align-items:flex-start;gap:18px;flex-wrap:wrap;">
+        <div style="font-size:32px;">🛡️</div>
+        <div style="flex:1;min-width:260px;">
+          <div style="font-size:11px;font-family:'JetBrains Mono',monospace;color:#8b5cf6;letter-spacing:2px;margin-bottom:8px;">VALIDATION LAYER</div>
+          <div style="font-size:18px;font-weight:600;color:var(--white);margin-bottom:10px;">Adversarial review on every autonomous decision.</div>
+          <div style="font-size:14px;color:var(--lgray);line-height:1.7;">Adversarial review of every high-severity or autonomous-mode decision before execution. Independent reasoning from the advisor. Seven checks against the proposed action. Blocks unsafe decisions. Escalates to human review with full reasoning attached.</div>
+        </div>
+      </div>
+    </div>
+    <div style="padding:14px 20px;margin-top:20px;background:rgba(59,130,246,0.05);border:1px solid rgba(59,130,246,0.12);border-radius:8px;font-size:12px;color:var(--lgray);font-family:'JetBrains Mono',monospace;" class="reveal">
+      <span style="color:var(--blue)">→</span> Three networks in parallel &nbsp;·&nbsp; One advisor synthesizing &nbsp;·&nbsp; One validator checking &nbsp;·&nbsp; Every decision auditable
     </div>
   </div>
 </section>
@@ -485,37 +559,37 @@ function toggleMobileMenu() {
 <!-- AUTONOMOUS -->
 <section id="autonomous" class="auto-section">
   <div class="container">
-    <div class="eyebrow reveal">Full autonomous mode</div>
-    <h2 class="section-title reveal">The AI acts.<br>You review.</h2>
-    <p class="section-sub reveal">Three operating modes — from human-in-the-loop to fully autonomous. You decide how much control the AI has.</p>
+    <div class="eyebrow reveal">Operating modes</div>
+    <h2 class="section-title reveal">You decide<br>how autonomous.</h2>
+    <p class="section-sub reveal">Three modes — from human-in-the-loop to fully autonomous. Per-action granularity inside each mode. You set the boundaries. The AI respects them without exception.</p>
     <div class="auto-grid">
       <div class="auto-features">
         <div class="auto-feature reveal">
           <div class="auto-icon" style="background:rgba(59,130,246,0.1)">👁️</div>
           <div>
             <h4>Supervised Mode</h4>
-            <p>AI detects and recommends. Every action requires analyst approval. Full visibility, zero autonomous execution.</p>
+            <p>AI detects and recommends. Every action requires analyst approval. Full calibration loop runs from day one. Use this to build trust before turning on autonomous containment.</p>
           </div>
         </div>
         <div class="auto-feature reveal" style="transition-delay:0.1s">
           <div class="auto-icon" style="background:rgba(245,158,11,0.1)">⚡</div>
           <div>
             <h4>Autonomous Mode</h4>
-            <p>AI acts autonomously above your confidence threshold. High-confidence threats contained immediately.</p>
+            <p>AI contains threats above your confidence threshold. Medium-confidence cases still route to analyst. Validator agent reviews every autonomous decision before it executes. High-confidence threats get contained in seconds.</p>
           </div>
         </div>
         <div class="auto-feature reveal" style="transition-delay:0.2s">
           <div class="auto-icon" style="background:rgba(239,68,68,0.1)">🔴</div>
           <div>
             <h4>Full Autonomous Mode</h4>
-            <p>Zero human intervention. AI detects, decides, and executes containment on all threats. Every action logged.</p>
+            <p>Zero human intervention required. The AI handles detection, decision, and containment on every threat. Legal acknowledgment workflow required before activation. Every action logged with reasoning. Compliance trail preserved across tenant lifecycle.</p>
           </div>
         </div>
         <div class="auto-feature reveal" style="transition-delay:0.3s">
           <div class="auto-icon" style="background:rgba(139,92,246,0.1)">📋</div>
           <div>
-            <h4>Per-Action Permissions</h4>
-            <p>Set auto/approval/disabled independently for each SOAR action. Granular control over every response action.</p>
+            <h4>Per-Action Granularity</h4>
+            <p>For each of 26 SOAR actions, set the autonomy level independently. Block IP automatically. Require approval before isolating hosts. Disable disable_account entirely. The choices are yours, action-by-action.</p>
           </div>
         </div>
       </div>
@@ -558,8 +632,8 @@ function toggleMobileMenu() {
 <section id="explainable">
   <div class="container">
     <div class="eyebrow reveal">Explainable AI</div>
-    <h2 class="section-title reveal">The AI shows<br>its work.</h2>
-    <p class="section-sub reveal">Every detection gets a full written threat assessment from Claude. Every action has a plain-English reason. You always know exactly why the AI did what it did.</p>
+    <h2 class="section-title reveal">Every decision<br>shows its work.</h2>
+    <p class="section-sub reveal">No black box. Every detection gets a written threat assessment. Every action gets a plain-English reason. Every decision is logged with confidence score, reasoning, and outcome. Reviewable, exportable, defensible.</p>
     <div class="explainable-main-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:32px;">
       <div style="background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:28px;" class="reveal">
         <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--blue);letter-spacing:2px;margin-bottom:16px;">THREAT ASSESSMENT</div>
@@ -594,17 +668,17 @@ function toggleMobileMenu() {
       <div style="background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:20px;text-align:center;" class="reveal">
         <div style="font-size:24px;margin-bottom:10px;">📝</div>
         <div style="font-size:14px;font-weight:600;margin-bottom:6px;">Written assessments</div>
-        <div style="font-size:13px;color:var(--lgray);line-height:1.5;">Every detection gets a full threat brief written by Claude — context, risk, recommended action.</div>
+        <div style="font-size:13px;color:var(--lgray);line-height:1.5;">Claude generates a full threat brief on every detection: context, risk analysis, recommended action, justification. Not a confidence number — a paragraph you can read.</div>
       </div>
       <div style="background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:20px;text-align:center;" class="reveal" style="transition-delay:0.1s">
         <div style="font-size:24px;margin-bottom:10px;">🔍</div>
         <div style="font-size:14px;font-weight:600;margin-bottom:6px;">Action reasoning</div>
-        <div style="font-size:13px;color:var(--lgray);line-height:1.5;">Every SOAR action includes a plain-English explanation of why it was taken. No black box decisions.</div>
+        <div style="font-size:13px;color:var(--lgray);line-height:1.5;">Every SOAR action includes the specific reason the AI chose it. Blocked an IP? "Known Tor exit node, 847 failed logins in 90 seconds, pattern matches credential stuffing." No mystery decisions.</div>
       </div>
       <div style="background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:20px;text-align:center;" class="reveal" style="transition-delay:0.2s">
         <div style="font-size:24px;margin-bottom:10px;">📋</div>
-        <div style="font-size:14px;font-weight:600;margin-bottom:6px;">Compliance audit trail</div>
-        <div style="font-size:13px;color:var(--lgray);line-height:1.5;">Full immutable log of every AI decision, action taken, confidence score, and outcome for compliance.</div>
+        <div style="font-size:14px;font-weight:600;margin-bottom:6px;">Forensic-grade audit trail</div>
+        <div style="font-size:13px;color:var(--lgray);line-height:1.5;">Immutable log of every AI decision, action, confidence score, validator output, and outcome. Survives tenant lifecycle events. Exportable for compliance audits and regulatory review.</div>
       </div>
     </div>
   </div>
@@ -613,9 +687,9 @@ function toggleMobileMenu() {
 <!-- SOAR ACTIONS -->
 <section id="soar">
   <div class="container">
-    <div class="eyebrow reveal">26 SOAR actions</div>
+    <div class="eyebrow reveal">26 SOAR actions · 6 categories</div>
     <h2 class="section-title reveal">Every response action.<br>Fully automated.</h2>
-    <p class="section-sub reveal">DomeSOC ships with 26 built-in SOAR actions across 7 categories. Each configurable to auto-execute or require approval.</p>
+    <p class="section-sub reveal">DomeSOC ships with 26 built-in SOAR actions across 6 categories. Each configurable per-action: auto-execute, require approval, or disable entirely.</p>
     <div class="soar-grid">
       <div class="soar-card reveal">
         <div class="soar-card-title">🌐 Network</div>
@@ -660,9 +734,9 @@ function toggleMobileMenu() {
 <!-- INTEGRATIONS -->
 <section id="integrations">
   <div class="container">
-    <div class="eyebrow reveal">19 native integrations</div>
+    <div class="eyebrow reveal">19 production-wired · 21 connectors · 5 threat intel feeds</div>
     <h2 class="section-title reveal">Plugs into your<br>existing stack.</h2>
-    <p class="section-sub reveal">Native API integrations with the tools your team already uses. No middleware, no connectors, no professional services.</p>
+    <p class="section-sub reveal">19 production-wired API integrations with the tools your team already uses today. Plus 21 additional connectors ready to enable on demand. No middleware. No professional services required.</p>
     <div class="integrations-grid">
       <div class="int-card reveal"><div class="int-icon">🦅</div><div><div class="int-name">CrowdStrike</div><div class="int-type">EDR</div></div></div>
       <div class="int-card reveal" style="transition-delay:0.05s"><div class="int-icon">🛡️</div><div><div class="int-name">MS Defender</div><div class="int-type">EDR</div></div></div>
@@ -683,6 +757,19 @@ function toggleMobileMenu() {
       <div class="int-card reveal" style="transition-delay:0.8s"><div class="int-icon">🪟</div><div><div class="int-name">Microsoft Sentinel</div><div class="int-type">SIEM</div></div></div>
       <div class="int-card reveal" style="transition-delay:0.85s"><div class="int-icon">🔍</div><div><div class="int-name">Elastic SIEM</div><div class="int-type">SIEM</div></div></div>
     </div>
+    <p style="margin-top:20px;font-size:13px;color:var(--gray);text-align:center;" class="reveal">Plus 21 additional connectors ready to enable across EDR, identity, ticketing, cloud, firewall, SIEM, and threat intelligence platforms.</p>
+
+    <div style="margin-top:48px;background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:28px;" class="reveal">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--cyan);letter-spacing:2px;margin-bottom:14px;">5 AMBIENT THREAT INTELLIGENCE FEEDS</div>
+      <div style="font-size:18px;font-weight:600;color:var(--white);margin-bottom:14px;">Active in production. Enriching every detection with cross-source context.</div>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;">
+        <span class="soar-tag">AlienVault OTX</span>
+        <span class="soar-tag">CISA Known Exploited Vulnerabilities</span>
+        <span class="soar-tag">Emerging Threats</span>
+        <span class="soar-tag">VirusTotal</span>
+        <span class="soar-tag">AbuseIPDB</span>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -691,7 +778,7 @@ function toggleMobileMenu() {
   <div class="container">
     <div class="eyebrow reveal">Pricing</div>
     <h2 class="section-title reveal">Augment your SOC team.<br>Not your budget.</h2>
-    <p class="section-sub reveal">One tier-1 SOC analyst costs $75,000+/yr (industry average). DomeSOC Autonomous starts at $2,500/mo — handling detection, triage, and response automatically so your team focuses on what matters.</p>
+    <p class="section-sub reveal">One tier-1 SOC analyst costs $75,000+/year (industry average). DomeSOC Autonomous starts at $2,500/mo — handling detection, analysis, and containment automatically while your team focuses on what matters.</p>
 
     <div style="background:rgba(59,130,246,0.06);border:1px solid rgba(59,130,246,0.15);border-radius:12px;padding:20px 28px;margin-bottom:40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;" class="reveal">
       <div style="font-size:14px;color:var(--lgray);">💡 <strong style="color:var(--white)">Design partner program:</strong> First 3–5 customers get 60-day free trials and direct input into the product roadmap.</div>
@@ -709,6 +796,8 @@ function toggleMobileMenu() {
         </div>
         <div class="pricing-features">
           <div class="pricing-feature">Full 3-network AI detection pipeline</div>
+          <div class="pricing-feature">10-source context architecture from day one</div>
+          <div class="pricing-feature">Calibration loop running per-tenant</div>
           <div class="pricing-feature">Claude threat assessment on every detection</div>
           <div class="pricing-feature">MITRE ATT&amp;CK mapping &amp; confidence scoring</div>
           <div class="pricing-feature">All 26 SOAR actions — analyst approval required</div>
@@ -731,10 +820,11 @@ function toggleMobileMenu() {
         </div>
         <div class="pricing-features">
           <div class="pricing-feature">Everything in Supervised</div>
-          <div class="pricing-feature">Autonomous containment — no analyst needed</div>
+          <div class="pricing-feature">Autonomous containment within your thresholds</div>
+          <div class="pricing-feature">Validator agent on every autonomous decision</div>
           <div class="pricing-feature">Per-action permissions — granular control</div>
-          <div class="pricing-feature">19 native integrations — CrowdStrike, Okta, Jira &amp; more</div>
-          <div class="pricing-feature">VirusTotal IP enrichment on every detection</div>
+          <div class="pricing-feature">19 production-wired integrations (+ 21 connectors)</div>
+          <div class="pricing-feature">5 ambient threat intel feeds enriching every detection</div>
           <div class="pricing-feature">Detection tuning — whitelist &amp; suppress rules</div>
           <div class="pricing-feature">SLA tracking &amp; compliance dashboard</div>
           <div class="pricing-feature">14-day free trial — no credit card</div>
@@ -753,12 +843,12 @@ function toggleMobileMenu() {
         <div class="pricing-features">
           <div class="pricing-feature">Everything in Autonomous</div>
           <div class="pricing-feature">Full autonomous mode — zero human required</div>
-          <div class="pricing-feature">Legal acknowledgment &amp; liability workflow</div>
+          <div class="pricing-feature">Legal acknowledgment workflow with forensic preservation</div>
           <div class="pricing-feature">Endpoint agent deployment</div>
           <div class="pricing-feature">Dedicated onboarding &amp; configuration</div>
           <div class="pricing-feature">SLA tracking with defined response targets</div>
-          <div class="pricing-feature">Quarterly security reviews</div>
-          <div class="pricing-feature">60-day design partner trial</div>
+          <div class="pricing-feature">Quarterly architecture reviews</div>
+          <div class="pricing-feature">60-day design partner trial available</div>
         </div>
         <a href="https://app.domesoc.com/signup" class="pricing-cta pricing-cta-ghost">Get started</a>
       </div>
@@ -781,14 +871,41 @@ function toggleMobileMenu() {
   </div>
 </section>
 
+<!-- BUILT DELIBERATELY -->
+<section id="built-deliberately">
+  <div class="container">
+    <div class="eyebrow reveal">Built deliberately</div>
+    <h2 class="section-title reveal">Production architecture.<br><span class="grad">Patent pending.</span></h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin-top:32px;">
+      <div class="reveal" style="background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:28px;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--blue);letter-spacing:2px;margin-bottom:10px;">PATENT PENDING</div>
+        <div style="font-size:15px;font-weight:600;color:var(--white);margin-bottom:10px;">US Provisional 64/031,411</div>
+        <div style="font-size:13px;color:var(--lgray);line-height:1.7;">Autonomous decision architecture with adversarial validation, per-tenant calibration, and forensic-grade audit preservation.</div>
+      </div>
+      <div class="reveal" style="background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:28px;transition-delay:0.1s;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--cyan);letter-spacing:2px;margin-bottom:10px;">PRODUCTION ARCHITECTURE</div>
+        <div style="font-size:15px;font-weight:600;color:var(--white);margin-bottom:10px;">Verified, not assumed</div>
+        <div style="font-size:13px;color:var(--lgray);line-height:1.7;">Multi-tenant isolation verified through controlled testing. Forensic record preservation across tenant lifecycle. Three safety mechanisms pressure-tested against synthetic adversarial conditions.</div>
+      </div>
+      <div class="reveal" style="background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:28px;transition-delay:0.2s;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--green);letter-spacing:2px;margin-bottom:10px;">BUILT BY</div>
+        <div style="font-size:15px;font-weight:600;color:var(--white);margin-bottom:6px;">Mohammad Khubaib</div>
+        <div style="font-size:13px;color:var(--lgray);line-height:1.7;margin-bottom:10px;">Founder · Patent inventor</div>
+        <a href="mailto:hello@domesoc.com" style="font-size:13px;color:var(--blue);text-decoration:none;">hello@domesoc.com →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- FINAL CTA -->
 <div class="final-cta">
-  <div class="eyebrow reveal" style="text-align:center">Get started today</div>
-  <h2 class="reveal">Stop reacting.<br><span class="grad">Start containing.</span></h2>
-  <p class="reveal">Be among the first teams to run a fully autonomous security operation with DomeSOC. No per-seat pricing. No professional services. Just AI that works.</p>
+  <div class="eyebrow reveal" style="text-align:center">Get started</div>
+  <h2 class="reveal">Stop reacting.<br><span class="grad">Start verifying.</span></h2>
+  <p class="reveal">Be among the first teams running a fully autonomous SOC with safety mechanisms you can actually verify. Calibration that compounds. Validation that blocks unsafe decisions. Audit trails that survive.</p>
   <div class="hero-cta reveal">
     <a href="https://app.domesoc.com/signup" class="btn-hero">Start 14-Day Free Trial →</a>
-    <button onclick="openDemo()" class="btn-hero-outline"><span class="pulse"></span> See Live Demo</button>
+    <a href="mailto:hello@domesoc.com" class="btn-hero-outline">Apply as design partner →</a>
+    <button onclick="openDemo()" class="btn-hero-ghost"><span class="pulse"></span> See Live Demo</button>
   </div>
 </div>
 
@@ -797,7 +914,7 @@ function toggleMobileMenu() {
   <div class="footer-inner">
     <div class="footer-logo">Dome<span>SOC</span></div>
     <div class="footer-links">
-      <a href="#how-it-works">How it works</a>
+      <a href="#architecture">How it works</a>
       <a href="#pricing">Pricing</a>
       <a href="https://app.domesoc.com/docs">Docs</a>
       <a href="mailto:hello@domesoc.com">Contact</a>
